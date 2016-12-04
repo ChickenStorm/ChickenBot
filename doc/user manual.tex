@@ -1,0 +1,227 @@
+\documentclass[a4paper,12pt,twoside]{article}
+	\newcommand{\ig}[1]{}
+	\def \be {\begin{equation}}
+	\def \ee {\end{equation}}
+	
+	\def \dd  {{\rm d}}
+	%\newcommand{\dd}{{\rm d}}
+	\newcommand{\mail}[1]{{\href{mailto:#1}{#1}}}
+	\newcommand{\ftplink}[1]{{\href{ftp://#1}{#1}}}
+	
+	\newcommand{\haut}{\text{ht}}
+	\newcommand{\sgn}{\text{sign}}
+	\newcommand{\ora}{\overrightarrow}
+	%
+	%create column vector
+	\newcommand{\cvec}[3]{\begin{pmatrix}#1\\#2\\#3\end{pmatrix}}
+	\newcommand{\cvect}[2]{\begin{pmatrix}#1\\#2\end{pmatrix}}
+	
+	\newcommand{\titleTP}[1]{\title{\vspace{-2.5cm} #1}}
+	
+	%joel:
+	\newcommand{\req}[1]{ Eq.\,(\ref{#1})} % ref specialisé
+	\newcommand{\rfi}[1]{ Fig.\,\ref{#1}}	% ref spécialisé
+	\newcommand{\sib}[1]{\,[\si{#1}]}	% si entre []
+	\newcommand{\refb}[1]{\,\ref{#1}}	% ?
+	\newcommand{\SIe}[3]{(#1\pm\,#2)\,\si{#3}}	% SI + erreur
+	\newcommand{\SIeo}[4]{(#1\pm\,#2)\cdot 10^{#3}\,\si{#4}} % SI + erreur + 10^x
+	
+	\newcommand{\olra}{\overleftrightarrow}
+	
+	\usepackage{ifthen,changepage}
+	\newcommand{\ifEvenPagebreak}{
+		\checkoddpage
+		\ifthenelse{\boolean{oddpage}}{}{
+			\hfill
+			\vfill
+			\thispagestyle{empty}
+			\pagebreak}
+	}
+	
+
+		\usepackage{graphicx} % pour l'inclusion de figures en eps,pdf,jpg
+		\usepackage{amsmath} % quelques symboles mathematiques en plus
+		\usepackage{amsthm} % thm definition
+		\usepackage{numprint}
+		\usepackage[francais]{babel}
+		\usepackage[utf8]{inputenc}
+		\usepackage[colorlinks,bookmarks=false,linkcolor=blue,urlcolor=blue]{hyperref}
+		\usepackage[toc,page]{appendix}
+		\usepackage{fancyhdr}
+		%\usepackage{wasysym} % symbol supp comme l'éclaire
+		\usepackage{amssymb}
+		\usepackage{esint}
+		\usepackage{wrapfig}
+		
+		%joel:
+		\usepackage{siunitx} % affichage des unités SI d'une manière correcte et 			
+	
+	\newcommand{\thmDef}{
+		\RequirePackage{amsthm}
+		
+		\newtheoremstyle{def}  % follow `plain` defaults but change HEADSPACE.
+		{\topsep}   % ABOVESPACE
+		{\topsep}   % BELOWSPACE
+		{\normalfont}  % BODYFONT
+		{0pt}       % INDENT (empty value is the same as 0pt)
+		{\bfseries} % HEADFONT
+		{.}         % HEADPUNCT
+		{\newline}  % HEADSPACE. `plain` default: {5pt plus 1pt minus 1pt}
+		{}          % CUSTOM-HEAD-SPEC
+		
+		\newtheoremstyle{thm}  % follow `plain` defaults but change HEADSPACE.
+		{\topsep}   % ABOVESPACE
+		{\topsep}   % BELOWSPACE
+		{\itshape}  % BODYFONT
+		{0pt}       % INDENT (empty value is the same as 0pt)
+		{\bfseries} % HEADFONT
+		{.}         % HEADPUNCT
+		{\newline}  % HEADSPACE. `plain` default: {5pt plus 1pt minus 1pt}
+		{}          % CUSTOM-HEAD-SPEC
+		
+		\newtheorem{theorem}{Théorème}
+		
+		\theoremstyle{def}
+		\newtheorem{definition}{\underline {Définition}}[section]
+		
+	}
+	
+	\newcommand{\texteStylePhyNum}{ % texte style
+		\paperheight=297mm
+		\paperwidth=210mm
+		
+		\setlength{\textheight}{235mm}
+		\setlength{\topmargin}{-1.2cm} % pour centrer la page verticalement
+		%\setlength{\footskip}{5mm}
+		\setlength{\textwidth}{15cm}
+		\setlength{\oddsidemargin}{0.56cm}
+		\setlength{\evensidemargin}{0.56cm}
+	}
+	
+	\newcommand{\texteStyleTP}{ % texte style
+		%\paperheight=297mm
+		%\paperwidth=210mm
+		\usepackage[left = 2cm,top = 2cm,top = 2.5cm,bottom=1.5cm]{geometry} % pour les bonnes marges
+	}
+	
+	\newcommand{\texteStyleLM}{ % texte style
+		%\paperheight=297mm
+		%\paperwidth=210mm
+		\usepackage[left = 2cm,top = 2cm,top = 2.5cm,bottom=1.5cm]{geometry} % pour les bonnes marges
+		
+	}
+	
+	\newcommand{\texteParagraphOption}{
+		% Quelques options pour les espacements entre lignes, l'identation 
+		% des nouveaux paragraphes, et l'espacement entre paragraphes
+		\baselineskip=16pt
+		\parindent=15pt
+		\parskip=5pt
+	}
+	
+	\newcommand{\pageHeaderFooter}[2]{
+		\RequirePackage{fancyhdr}
+		\pagestyle{fancy}
+		\lhead{#1}
+		\rhead{\today}
+		\chead{ #2}
+		\cfoot{\thepage}
+	}
+
+\usepackage{courier}
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.2,0.2,0.2}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=l,
+	language=sh,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=left,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
+\usepackage{enumitem}
+\texteStylePhyNum
+\pageHeaderFooter{Manuelle utilisateur}{}
+\begin{document}
+	
+
+		\baselineskip=16pt
+		\parindent=15pt
+		\parskip=5pt
+		
+		\title{Manuelle utilisateur pour Chicken Bot}
+		\date{\today}
+		\author{ChickenStorm}
+		\maketitle
+		
+	
+		\section{introduction}
+		
+		\section{commande}
+		
+		\subsection{!vote}
+		la commande \verb|!vote| permet de créer et de gérer des votes.
+		
+		Pour voter dans un vote déjà existant, il suffit d'entrer \verb|!vote id R|, où \verb|id| est l'identifiant (un nombre) du vote (pas de panique le bot donnera cette identifiant) et \verb|R| le numéro de la réponse choisit. Si vous pensez avoir perdu l'identifiant du vote vous pouvez entrer  \verb|!vote list| (section \ref{seq:cmd:sub!vote:sub:list}) pour voir la liste des votes auxquels vous avez accès.
+		
+		\ig{
+			\subsubsection{!vote help}
+			cette commande permet d'afficher l'aide pour la commande vote
+		}
+		\subsubsection{!vote create}\label{seq:cmd:sub!vote:sub:create}
+		
+		Permet de créer un vote, la syntaxe est la suivante (en une ligne).
+		\begin{lstlisting}
+		!vote create Q;(role_1,role_2,role_3,...,role_N); (R_1,R_2,R_3,...,R_N) 
+		\end{lstlisting}
+		
+		créera un vote dont la question est \verb|Q|, les réponses \verb|R_1|, \verb|R_2|, $\dots$ ,\verb|R_N|. Les personnes qui pourront voter et voir le vote sont ceux qui se trouvent dans au moins un des rôles listés; pour savoir quelle numéro correspond à quelle numéro, entrez la commande \verb|!roleList| (section \ref{seq:cmd:sub:!roleList}).
+		
+		Par exemple
+		\begin{lstlisting}
+		!vote create comment trouvez vous la fonction de vote ?;(0,5);(tres bien,geniale,fantastique) 
+		\end{lstlisting}
+		créera un vote comme suit :
+		
+		\begin{minipage}{0.01\textwidth}
+			\rule{0.4pt}{4.5cm}
+		\end{minipage}
+		\begin{minipage}{.95\textwidth}
+			
+			vote créé avec succès\\
+			l'id de ce vote est $1$\\
+			Pour voter entrez "!vote 1 n" où n est un nombre de 1 à 3 pour le choix correspondant : \\
+			vote : comment trouvez vous la fonction de vote ?
+			\begin{enumerate}[label =\arabic*)]
+				 \item très bien
+				 \item géniale
+				 \item fantastique
+			\end{enumerate}
+		\end{minipage}
+		\subsubsection{!vote list}\label{seq:cmd:sub!vote:sub:list}
+		Pour voir la liste des votes auxquels vous avez accès, entrez \verb|!vote list|.
+		\subsubsection{!vote result}
+		
+		Pour voir le résultat d'un vote, entrez \verb|!vote result id|, où \verb|id| est l'identifiant du vote. 
+		
+		\subsubsection{!vote close}
+		Pour fermer un vote, entrez \verb|!vote cl id|, où \verb|id| est l'identifiant du vote. Seule le propriétaire du vote peut le fermer.
+		
+\subsection{!roleList}\label{seq:cmd:sub:!roleList}
+affiche la liste des rôles avec le nombre correspondant. ce nombre est utilisé pour la faction de création de vote (section \ref{seq:cmd:sub!vote:sub:create}).
+		
+\end{document}

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>admin page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <style>
+	/*.div-l0 {
+		position :relative;
+		left: 40px
+	}
+	.div-l1 {
+		position :relative;
+		left: 80px
+	}
+	.div-l2 {
+		position :relative;
+		left: 120px
+	}*/
+	.divLine{
+		display: inline-block;
+		border-left: 1px solid;
+		
+		border-left-color: grey;
+	}
+	.div-lup {
+		position :relative;
+		left: 40px;
+		display: inline-block;
+		width : 1000px
+	}
+	.numType{
+		color: green;
+		
+	}
+	.strType{
+		color: blue;
+	}
+	.boolType{
+		color : rgb(127,0,116)
+	}
+	.colapse{
+		position: relative;
+		width: 25px;
+		text-align: center;
+		
+	}
+	button.edit{
+		position: relative;
+		width: 25px;
+		text-align: center;
+		
+		
+	}
+	
+	
+	.delete{
+		position: relative;
+		width: 25px;
+		text-align: center;
+		
+	}
+	span .s1{
+		
+	}
+	.in-edit{
+		
+	}
+	.spanObjectIndex{
+		
+	}
+	.spanObjectValue{
+		
+	}
+	.undef-null{
+		color: red;
+	}
+	
+    </style>
+    <script>
+	//'use strict';
+	//JSON.stringify
+	var data = #textData#
+	
+	//var dataMapped ={}
+	
+	var objectType = typeof {a:1}
+	var strType = typeof "s";
+	var numType = typeof 1;
+	var boolType = typeof true;
+	
+	function copieData(data){ // copie des donné mais pas la référence
+		return JSON.parse(JSON.stringify(data));
+	}
+	
+	function show(data){ // affiche l'object
+		if (typeof data == objectType) {
+			var returnVal = "{"
+			for (var i in data){
+				returnVal+= " "+show(i)+" : " + show(data[i])+","
+			}
+			returnVal = returnVal.substring(0,returnVal.length-1)+"}"
+			return returnVal
+		}
+		else if(strType ==typeof data){
+			return "\""+data+"\"";
+		}
+		else{
+			return data+"";
+		}
+	}
+	
+	
+	function showDataHTML(data,arrayIndex){
+		
+		if (typeof data == objectType && data!= null) {
+			
+			var endStr = ",</div></div><br>"
+			var returnVal = "<button class ='colapse' onclick='colapseSwitch(this)'>-</button>"
+			//returnVal+="<button class ='edit' onclick='editButton("+JSON.stringify(arrayIndex)+")'>e</button>"
+			//returnVal+="<button class ='delet' onclick='deleteButton("+JSON.stringify(arrayIndex)+")'>d</button>"
+			returnVal+="{<br><span class='s1'> "
+			var numberOfChild = 0;
+			for (var i in data){
+				
+				++numberOfChild;
+				var arrayIndexTemp = copieData(arrayIndex);
+				arrayIndexTemp.push(i);
+				/*if (typeof data[i] == objectType) {
+					if (getDataValue(dataMapped,arrayIndexTemp)==undefined) {
+					//alert("")
+					setDataValue(dataMapped,arrayIndexTemp,{"vis":true});
+					//
+					}
+				}*/
+				
+				
+				returnVal+= "<div class='divLine'>"
+				returnVal+="<div id='div-index-"+JSON.stringify(arrayIndexTemp)+"' class='div-lup'>"
+				returnVal+="<button class ='edit' onclick='editButton("+JSON.stringify(arrayIndexTemp)+","+JSON.stringify(data[i])+")'>e</button>"
+				returnVal+="<button class ='delete' onclick='deleteButton("+JSON.stringify(arrayIndexTemp)+")'>d</button>"
+				returnVal+="<span class='spanObjectIndex'>"+showValHTML(i)+"</span>"+" : " +"<span class='spanObjectValue' indexArray ='"+JSON.stringify(arrayIndexTemp)+"' onclick='editValueClick("+JSON.stringify(arrayIndexTemp)+")' >"+ showDataHTML(data[i],arrayIndexTemp)+"</span>"+endStr
+				
+				/*if (typeof data[i] ==objectType) {
+					returnVal+= "<div id='div-index-"+JSON.stringify(arrayIndexTemp)+"' class='divLine'><div class='div-lup'>"+"<span class='spanValueIndex'>"+showValHTML(i)+"</span>"+" : " + showDataHTML(data[i],arrayIndexTemp)+endStr
+				}
+				else{
+					returnVal+= "<div id='div-index-"+JSON.stringify(arrayIndexTemp)+"' class='divLine'><div class='div-lup'>"+showValHTML(i)+" : " + showDataHTML(data[i],arrayIndexTemp)+endStr
+				}*/
+			}
+			
+			if (numberOfChild ==0) {
+				returnVal += "<div class='divLine'> <div class='div-lup'><button class='edit' onclick=buttonAddKey("+JSON.stringify(arrayIndex)+",this)>+</button></div></div></span><br>}"
+			}
+			else{
+				returnVal = returnVal.substring(0,returnVal.length-endStr.length)+"</div></div><br><div class='divLine'> <div class='div-lup'><button class='edit' onclick=buttonAddKey("+JSON.stringify(arrayIndex)+",this)>+</button></div></div></span><br>}"
+			}
+			
+			return returnVal
+		}
+		else {
+			
+			/*if (getDataValue(dataMapped,arrayIndex)!= true || getDataValue(dataMapped,arrayIndex)!= false) {
+				//alert(JSON.stringify(getDataValue(dataMapped,arrayIndex)))
+				//setDataValue(dataMapped,arrayIndex,true);
+				
+			}*/
+			return showValHTML(data);
+		}
+		
+	}
+	
+	function showValHTML(data) {
+		if(strType == typeof data){
+			return "<span class='strType'>"+"\""+data+"\""+"</span>";
+		}
+		else if (typeof data == numType) {
+			return "<span class='numType'>" +data +"</span>"
+		}
+		else if (typeof data == boolType) {
+			return "<span class='boolType'>"+data+"</span>"
+		}
+		else if (data==undefined) {
+			return "<span class='undef-null'>"+data+"</span>"
+		}
+		else if ( data == null) {
+			return "<span class='undef-null'>null</span>";
+		}
+		else{
+			return data+"";
+		}
+	}
+	
+	colapseSwitch = function (button){
+		//alert("")
+		/*button = document.getElementById("");
+		button.parentNode.style.visibility = false
+		button.parentNode*/
+		//alert("")
+		//$(button).parent().children("div").hide()
+		$(button).parent().children("span.s1").slideToggle('slow');
+		$(button).parent().children("br").slideToggle('slow');
+		//alert()
+		if ($(button).text()=="-") {
+			
+			$(button).text("+")
+		}
+		else{
+			
+			$(button).text("-")
+		}
+		
+		
+	}
+	
+	init = function(){
+		document.getElementById("d1").innerHTML= "<span calss='s1'>"+showDataHTML(data,[])+"</span>";
+		//alert(JSON.stringify(dataMapped))
+	}
+	
+	function getDataFormIndex(array){
+		var dataTemp = copieData(data);
+		
+		for(var i = 0 ; i< array.length;++i){
+			dataTemp = copieData(dataTemp[array[i]]);
+		}
+		return dataTemp
+	}
+	
+	editButton = function (arrayIndex,data){
+		//alert(arrayIndex)
+		
+		resteAllInput();
+		
+		var divEdit = document.getElementById("div-index-"+JSON.stringify(arrayIndex));
+		
+		$(divEdit).children(".spanObjectValue").html("<input class='in-edit' type=text value=\'"+JSON.stringify(data)+"\'> <button class = 'edit' onclick='buttonSaveData()'>s</button> <button onclick='buttonCancelData()' class = 'edit'>c</button>")
+		
+		
+		
+		//divEdit.innerHTML = ""
+	}
+	
+	function setDataValue(data,arrayIndexToChangeValue,value) {
+		
+		var refData = data;
+		for (var i = 0 ; i< arrayIndexToChangeValue.length-1;++i){
+			refData = refData[arrayIndexToChangeValue[i]];
+		}
+		refData[arrayIndexToChangeValue[arrayIndexToChangeValue.length-1]] = value;
+	}
+	function getDataValue(data,arrayIndexToChangeValue) {
+		
+		var refData = data;
+		for (var i = 0 ; i< arrayIndexToChangeValue.length-1;++i){
+			refData = refData[arrayIndexToChangeValue[i]];
+		}
+		return refData[arrayIndexToChangeValue[arrayIndexToChangeValue.length-1]];
+	}
+	
+	deleteButton = function (arrayIndexTemp){
+		//alert(arrayIndexTemp)
+		//var value= null
+		
+		//setDataValue(data,arrayIndexTemp,value);
+		
+		var boolConfirm = confirm("voulez vous vraiment supprimer cette entree?");
+		if (boolConfirm) {
+				
+				
+			var refData = data;
+			for (var i = 0 ; i< arrayIndexTemp.length-1;++i){
+				refData = refData[arrayIndexTemp[i]];
+			}
+			var copieRefData={};
+			
+			
+			delete refData[arrayIndexTemp[arrayIndexTemp.length-1]]
+			//resteAllInput();
+			document.getElementById("d1").innerHTML= "<span calss='s1'>"+showDataHTML(data,[])+"</span>";
+			
+		}
+	}
+	
+	function resteAllInput(){
+		
+		$(document.getElementById("d1")).find(".in-edit").parent().each(function(){
+			
+			//alert(getDataFormIndex(JSON.parse($(this).attr("indexArray"))))
+			$(this).html(showDataHTML(getDataFormIndex(JSON.parse($(this).attr("indexArray"))),JSON.parse($(this).attr("indexArray"))))
+		})
+		$(document.getElementById("d1")).find(".s-in-edit-2").each(function(){
+			
+			$(this).remove()
+		})
+	}
+	
+	buttonSaveData = function (){
+		//alert($("*").find(".in-edit").val())
+		//alert($("*").find(".in-edit").val())
+		var value= JSON.parse($("*").find(".in-edit").val());
+		
+		var arrayIndexToChangeValue =JSON.parse($('*').find(".in-edit").parent().attr("indexArray"));
+		//alert(arrayIndexToChangeValue)
+		setDataValue(data,arrayIndexToChangeValue,value)
+		//resteAllInput();
+		document.getElementById("d1").innerHTML= "<span calss='s1'>"+showDataHTML(data,[])+"</span>";
+	}
+	
+	buttonCancelData = function (){
+		resteAllInput();
+	}
+	
+	editValueClick = function (arrayIndex){
+		//alert(arrayIndex)
+		/*var divEdit = document.getElementById("div-index-"+JSON.stringify(arrayIndex));
+		$(divEdit).children(".spanObjectValue").html("<input class='in-edit' type=text>")*/
+		
+		//divEdit.innerHTML = ""
+	}
+	editIndexClick = function (arrayIndex){
+		//alert(arrayIndex)
+		/*var divEdit = document.getElementById("div-index-"+JSON.stringify(arrayIndex));
+		$(divEdit).children(".spanObjectIndex").html("<input class='in-edit' type=text>")*/
+		
+		//divEdit.innerHTML = ""
+	}
+	
+	
+	buttonAddKey = function (arrayIndex,button){
+		resteAllInput();
+		
+		var p=$(button).parent()
+		
+		p.html(p.html()+"<span class='s-in-edit-2'><input class='in-edit-2-key' type=text> : <input class='in-edit-2-val' type=text><button class = 'edit' onclick='buttonSaveNewData("+JSON.stringify(arrayIndex)+")'>s</button> <button onclick='buttonCancelData()' class = 'edit'>c</button></span>")
+	}
+	
+	buttonSaveNewData = function (array){
+		var value= JSON.parse($("*").find(".in-edit-2-val").val());
+		
+		var key = JSON.parse($("*").find(".in-edit-2-key").val());
+		array.push(key);
+		//alert(array)
+		
+		var refData = data;
+		for (var i = 0 ; i< array.length-1;++i){
+			refData = refData[array[i]];
+		}
+		if (refData[array[array.length-1]] == undefined) {
+			refData[array[array.length-1]] = value;
+		}
+		else{
+			alert("cette entree existe déjà")
+		}
+		
+		document.getElementById("d1").innerHTML= "<span calss='s1'>"+showDataHTML(data,[])+"</span>";
+	}
+	
+	sendData = function (){
+		
+	}
+	
+    </script>
+</head>
+<body onload="init()" >
+<!--B-->
+
+<div id =d1 class='viwerDiv'></div>
+<button class="send-data" onclick="sendData()"> send data</button>
+
+
+<!--E-->
+</body>
+</html>
