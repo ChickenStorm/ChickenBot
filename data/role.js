@@ -39,6 +39,7 @@ This file is part of Chicken Bot.
 exports.adminRoleId = {id:"132106449613619200",name:"Administrateur"}
 exports.modoRoleId = {id:"132114348947537921",name:"Modérateur"}
 exports.verified = {id:"132110152655568896",name:"Vérifié"}
+
 exports.getRoleIdByFactionColor = function (color){
     if (color==1) {
 	return {id:"133951475813449728",name:"Empire"};
@@ -48,6 +49,9 @@ exports.getRoleIdByFactionColor = function (color){
     }
     else if (color==11) {
 	return exports.neo;//{id:"133976248199151616",name:"Neo-Humaniste"};
+    }
+    else if (color==3) {
+	return exports.negore;
     }
     else if (color==6) {
 	return exports.aphera;
@@ -85,6 +89,9 @@ exports.getFactionColorByRoleId = function (roleId){ // retourne 0 si ce n'est p
     else if (/*roleId=="133976248199151616"*/roleId==exports.neo.id ) {
 	return 11;
     }
+    else if (roleId == exports.negore.id) {
+	return 3;
+    }
     else if (roleId == exports.aphera.id) {
 	return 6;
     }
@@ -112,9 +119,16 @@ exports.getFactionColorByRoleId = function (roleId){ // retourne 0 si ce n'est p
     
 }
 
-exports.aphera = {id:"168733199306981377",name:"Aphéra"}; //6
-exports.synelle = {id:"168733261093142528",name:"synelle"}; //7
-exports.kovahk = {id:"168733329087135744",name:"kovahk"}; //2
+
+exports.negore ={id:"265898695566819329",name:"Negore"};  //3
+//exports.aphera = {id:"168733199306981377",name:"Aphéra"}; //6
+exports.aphera = {id:"265898673014046723",name:"Aphéra"}; //6
+
+exports.synelle = {id:"265898625995898881",name:"synelle"}; //7
+exports.kovahk = {id:"265897877241331712",name:"kovahk"}; //2
+
+//exports.synelle = {id:"168733261093142528",name:"synelle"}; //7
+//exports.kovahk = {id:"168733329087135744",name:"kovahk"}; //2
 
 //exports.cardan = {id:"199846296188616704",name:"cardan"}; //4
 exports.nvnerve = {id:"199847043089301505",name:"nvnerve"}; //9
@@ -129,9 +143,9 @@ exports.mago = {id:"232363534514651137",name:"mago"}; //10
 exports.imp = {id:"232362776666963979",name:"imp"}; //12
 
 
-exports.apheraServerRoleId = "168707014615236609";
-exports.kovahkServerRoleId = "168710784493289472";
-exports.synelleServerRoleId = "168706212093755394";
+exports.apheraServerRoleId = "265150450465112064"//"168707014615236609";
+exports.kovahkServerRoleId = "265129056293355521"//"168710784493289472";
+exports.synelleServerRoleId = "265144442720223232"//"168706212093755394";
 exports.empireServerRoleId = "168712895687950337";
 exports.neoServerRoleId = "168715579467890688";
 
@@ -146,11 +160,14 @@ exports.seldareServerRoleIds12 = "230282328323260416"
 exports.magoServerRoleIds12 = "230329080065687552"
 exports.neoServerRoleIds12= "230313452822855680"
 exports.impServerRoleIds12 = "230274263377117184"
-
+exports.negoreServerRoleId = "265118928315875329";
 
 exports.getRoleIdByFactionColorFactionServer = function (color){
     if (color==1) {
 	return exports.empireS11ServerRoleId;
+    }
+    if (color==3) {
+	return exports.negoreServerRoleId;
     }
     else if (color==11) {
 	return exports.neoServerRoleId;

@@ -20,11 +20,11 @@ This file is part of Chicken Bot.
 */
 
 exports.rootServerId = "132106417703354378"; // le serveru discord sur le quelle opère le bot 
-exports.apheraServerId = "168706048004325377";
+exports.apheraServerId = "265149393638785025" //"168706048004325377";
 exports.empireServerId = "168712667253571584";
-exports.kovahkServerId="168710332104048641";
-exports.neoServerId="168715394175991810";
-exports.synelleServerId="168706060230590464";
+exports.kovahkServerId= "265128814089076736"//"168710332104048641";
+exports.neoServerId= "168715394175991810";
+exports.synelleServerId= "265144219088322561"//"168706060230590464";
 
 exports.seldareServerId = "199856052370538496";
 exports.cardanServerId = "199856010247143424";
@@ -38,6 +38,8 @@ exports.neoServerS12Id="230323795733250048";
 exports.magoServerS12Id="230328887098343424";
 
 
+exports.negoreServerId = "265118157469908992";
+
 exports.getServerIdFromFactionColor = function (factionColor){
 	if (factionColor ==0 ) {
 		return exports.rootServerId;
@@ -47,6 +49,9 @@ exports.getServerIdFromFactionColor = function (factionColor){
 	}
 	else if (factionColor ==2 ) {
 		return exports.kovahkServerId;
+	}
+	else if (factionColor ==3 ) {
+		return exports.negoreServerId;
 	}
 	else if (factionColor ==6 ) {
 		return exports.apheraServerId;

@@ -321,3 +321,14 @@ des cerbères s'arment de boucliers antiradiation,
 des pégases sortent des bases sous terre.
 « Que commence la guerre !»
 */
+
+
+
+//Zahius - 9.12.2016  12:53
+//Journal de déminage de zahius, entrée 1 :
+//J'ai encore confondu les fils rouge et vert
+//Putin de daltonisme :cry:
+// Oxymore - 7.12.2016  18h14
+// Oxymore "il ne faut pas "assumer" qu'une droite est droite"
+
+//"Moi je suis innocent, corrompu et pourri jusqu'à la moelle, mais innocent !" -Zahius 11.12.2016 à 15h45
