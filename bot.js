@@ -568,6 +568,8 @@ var server = http.createServer(function(request, response) { // creation du serv
 		//console.log("-------");
 		var credentials = auth(request) // Basic authentification
 		//console.log(credentials)
+		var regSimuData = new RegExp ("(/)simulateur(?)*");
+		var regSimu = new RegExp ("(/)simulateur");
 		if (page == "" || page =="/") { // main page
 			
 			fs.readFile("./http-page/accueil-page.html",'utf8', function (err, data) { // 
@@ -703,7 +705,7 @@ var server = http.createServer(function(request, response) { // creation du serv
 				logHttp("send Data")
 			}*/
 		}
-		else if (page == "/simulateur") {
+		else if (regSimuData.test(page) || regSimu.test(page)) {
 			fs.readFile("./simulateur/Asylamba_project_bot_launcher.html",'utf8', function (err, data) { // lit les login du bot
 				if (err) {
 					response.writeHead(404, {'Content-Type': 'text/plain'});
