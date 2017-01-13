@@ -3119,7 +3119,7 @@ var commandList = [new commandC(
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-					botSendMessageBis(channelID,"simulateur de combat chickenbot.cloudapp.net/simulateur");//https://dl.dropboxusercontent.com/u/110049848/Projecet_script_public/Asylamba_project_online_launcher.html ");
+					botSendMessageBis(channelID,"simulateur de combat http://chickenbot.cloudapp.net:8080/simulateur");//https://dl.dropboxusercontent.com/u/110049848/Projecet_script_public/Asylamba_project_online_launcher.html ");
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: "simulateur de combat https://dl.dropboxusercontent.com/u/110049848/Projecet_script_public/Asylamba_project_online_launcher.html "
