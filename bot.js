@@ -568,8 +568,9 @@ var server = http.createServer(function(request, response) { // creation du serv
 		//console.log("-------");
 		var credentials = auth(request) // Basic authentification
 		//console.log(credentials)
-		var regSimuData = new RegExp ("(/)simulateur(?)*");
-		var regSimu = new RegExp ("(/)simulateur");
+		
+		var regSimuData = new RegExp ("\/simulateur(?)*");
+		var regSimu = new RegExp ("\/simulateur");
 		if (page == "" || page =="/") { // main page
 			
 			fs.readFile("./http-page/accueil-page.html",'utf8', function (err, data) { // 
