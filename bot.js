@@ -703,6 +703,42 @@ var server = http.createServer(function(request, response) { // creation du serv
 				logHttp("send Data")
 			}*/
 		}
+		else if (page == "/simulateur") {
+			fs.readFile("./simulateur/Asylamba_project_bot_launcher.html",'utf8', function (err, data) { // lit les login du bot
+				if (err) {
+					response.writeHead(404, {'Content-Type': 'text/plain'});
+					response.end("Not found");
+					logHttp("Not found")
+				}
+				else{
+					var dataToSend = data;
+					// rempalce #textData# par les données
+					dataToSend = data;
+					response.writeHead(200, {'Content-Type': 'text/html'});
+					response.end(dataToSend);
+					logHttp("send data")
+					
+				}
+			});
+		}
+		else if (page == "/simulateur/Asylamba_Project_Script.js" || page == "/simulateur/ChickenStorm.js" || page == "/simulateur/cookies_save.js" || page == "/simulateur/Html_page_text.js" || page == "/simulateur/simulateur_graphique.js" || page == "/simulateur/simulation_asylamba.js"|| page == "/simulateur/url_related_usage.js") {
+			fs.readFile("."+page,'utf8', function (err, data) { // lit les login du bot
+				if (err) {
+					response.writeHead(404, {'Content-Type': 'text/plain'});
+					response.end("Not found");
+					logHttp("Not found")
+				}
+				else{
+					var dataToSend = data;
+					// rempalce #textData# par les données
+					dataToSend = data;
+					response.writeHead(200, {'Content-Type': 'text/html'});
+					response.end(dataToSend);
+					logHttp("send data")
+					
+				}
+			});
+		}
 		else{
 			response.writeHead(404, {'Content-Type': 'text/plain'});
 			
@@ -3083,7 +3119,7 @@ var commandList = [new commandC(
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-					botSendMessageBis(channelID,"simulateur de combat https://dl.dropboxusercontent.com/u/110049848/Projecet_script_public/Asylamba_project_online_launcher.html ");
+					botSendMessageBis(channelID,"simulateur de combat chickenbot.cloudapp.net/simulateur");//https://dl.dropboxusercontent.com/u/110049848/Projecet_script_public/Asylamba_project_online_launcher.html ");
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: "simulateur de combat https://dl.dropboxusercontent.com/u/110049848/Projecet_script_public/Asylamba_project_online_launcher.html "

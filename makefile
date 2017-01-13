@@ -16,6 +16,14 @@ update:
 	cp ChickenBot-master/makefile makefile;
 	cp ChickenBot-master/run.sh run.sh;
 	cp ChickenBot-master/runLoop.sh runLoop.sh;
+	cp ChickenBot-master/simulateur/Asylamba_project_bot_launcher.html ./simulateur/Asylamba_project_bot_launcher.html;
+	cp ChickenBot-master/simulateur/Asylamba_Project_Script.js ./simulateur/Asylamba_Project_Script.js;
+	cp ChickenBot-master/simulateur/ChickenStorm.js ./simulateur/ChickenStorm.js;
+	cp ChickenBot-master/simulateur/cookies_save.js ./simulateur/cookies_save.js;
+	cp ChickenBot-master/simulateur/Html_page_text.js ./simulateur/Html_page_text.js;
+	cp ChickenBot-master/simulateur/simulateur_graphique.js ./simulateur/simulateur_graphique.js;
+	cp ChickenBot-master/simulateur/simulation_asylamba.js ./simulateur/simulation_asylamba.js;
+	cp ChickenBot-master/simulateur/url_related_usage.js ./simulateur/url_related_usage.js;
 	rm -r http-page;
 	cp -r ChickenBot-master/http-page http-page;
 	rm -r ChickenBot-master;
