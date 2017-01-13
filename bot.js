@@ -569,7 +569,7 @@ var server = http.createServer(function(request, response) { // creation du serv
 		var credentials = auth(request) // Basic authentification
 		//console.log(credentials)
 		
-		var regSimuData = new RegExp ("\/simulateur(?)*");
+		var regSimuData = new RegExp ("\/simulateur[?]*");
 		var regSimu = new RegExp ("\/simulateur");
 		if (page == "" || page =="/") { // main page
 			
