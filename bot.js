@@ -569,8 +569,8 @@ var server = http.createServer(function(request, response) { // creation du serv
 		var credentials = auth(request) // Basic authentification
 		//console.log(credentials)
 		
-		var regSimuData = new RegExp ("\/simulateur[?]*");
-		var regSimu = new RegExp ("\/simulateur");
+		//var regSimuData = new RegExp ("\/simulateur\\?*");
+		var regSimu = new RegExp ("\\/simulateur");
 		if (page == "" || page =="/") { // main page
 			
 			fs.readFile("./http-page/accueil-page.html",'utf8', function (err, data) { // 
@@ -706,8 +706,8 @@ var server = http.createServer(function(request, response) { // creation du serv
 				logHttp("send Data")
 			}*/
 		}
-		else if (regSimuData.test(page) || regSimu.test(page)) {
-			fs.readFile("./simulateur/Asylamba_project_bot_launcher.html",'utf8', function (err, data) { // lit les login du bot
+		else if (page == "/simulateur/Asylamba_Project_Script.js" || page == "/simulateur/ChickenStorm.js" || page == "/simulateur/cookies_save.js" || page == "/simulateur/Html_page_text.js" || page == "/simulateur/simulateur_graphique.js" || page == "/simulateur/simulation_asylamba.js"|| page == "/simulateur/url_related_usage.js") {
+			fs.readFile("."+page,'utf8', function (err, data) { // lit les login du bot
 				if (err) {
 					response.writeHead(404, {'Content-Type': 'text/plain'});
 					response.end("Not found");
@@ -724,8 +724,9 @@ var server = http.createServer(function(request, response) { // creation du serv
 				}
 			});
 		}
-		else if (page == "/simulateur/Asylamba_Project_Script.js" || page == "/simulateur/ChickenStorm.js" || page == "/simulateur/cookies_save.js" || page == "/simulateur/Html_page_text.js" || page == "/simulateur/simulateur_graphique.js" || page == "/simulateur/simulation_asylamba.js"|| page == "/simulateur/url_related_usage.js") {
-			fs.readFile("."+page,'utf8', function (err, data) { // lit les login du bot
+		else if (page == "/simulateur") {
+			console.log(page)
+			fs.readFile("./simulateur/Asylamba_project_bot_launcher.html",'utf8', function (err, data) { // lit les login du bot
 				if (err) {
 					response.writeHead(404, {'Content-Type': 'text/plain'});
 					response.end("Not found");
