@@ -332,3 +332,16 @@ des pégases sortent des bases sous terre.
 // Oxymore "il ne faut pas "assumer" qu'une droite est droite"
 
 //"Moi je suis innocent, corrompu et pourri jusqu'à la moelle, mais innocent !" -Zahius 11.12.2016 à 15h45
+
+
+
+/*ChickenStorm - 12.01.2016 dernier à 22:35
+!exit
+Marche pasBOT - 12.01.2016 dernier à 22:35
+stopping
+Chicken Bot - 12.01.2016 dernier à 22:35
+stopping
+13 janvier 2017
+Oxymore - 13.01.2016 à 00:20
+"une commande pour les gouverner tous" !
+*/
