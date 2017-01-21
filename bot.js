@@ -3344,7 +3344,7 @@ var commandList = [new commandC(
 						}
 					}
 					botSendMessageBis(channelID,"vous avez été retiré de la liste @BG");
-					botRemoveFromRole(discordServeurId,userID,role.bgRole.id);
+					botRemoveFromRoleBis(discordServeurId,userID,role.bgRole.id);
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: "idée proposée"
