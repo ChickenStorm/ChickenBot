@@ -40,6 +40,8 @@ exports.adminRoleId = {id:"132106449613619200",name:"Administrateur"}
 exports.modoRoleId = {id:"132114348947537921",name:"Modérateur"}
 exports.verified = {id:"132110152655568896",name:"Vérifié"}
 
+exports.bgRole={id:"271171017689268225", name:"Background"};
+
 exports.getRoleIdByFactionColor = function (color){
     if (color==1) {
 	return {id:"133951475813449728",name:"Empire"};

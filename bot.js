@@ -3303,6 +3303,8 @@ var commandList = [new commandC(
 							userListFaction[i].notifList.bg = true;
 						}
 					}
+					
+					botAddToRoleBis(discordServeurId,userID,role.bgRole.id);
 					botSendMessageBis(channelID,"vous avez été ajouté à la liste @BG");
 					
 					//bot.sendMessage({
@@ -3342,7 +3344,7 @@ var commandList = [new commandC(
 						}
 					}
 					botSendMessageBis(channelID,"vous avez été retiré de la liste @BG");
-					
+					botRemoveFromRole(discordServeurId,userID,role.bgRole.id);
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: "idée proposée"
