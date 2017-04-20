@@ -38,6 +38,12 @@ exports.neoServerS12Id="230323795733250048";
 exports.magoServerS12Id="230328887098343424";
 
 
+exports.empireServerS14Id = "303908606045192192";
+exports.cardanServerS14Id = "304256157885923339";
+exports.kovahkServerS14Id= "303915094004334594";
+exports.negoreServerIdS14 = "303897586916392962";
+exports.synelleServerIdS14 = "304243885381517313";
+
 exports.negoreServerId = "265118157469908992";
 
 exports.getServerIdFromFactionColor = function (factionColor){
@@ -45,25 +51,25 @@ exports.getServerIdFromFactionColor = function (factionColor){
 		return exports.rootServerId;
 	}
 	else if (factionColor ==1 ) {
-		return exports.empireServerS11Id;
+		return exports.empireServerS14Id;
 	}
 	else if (factionColor ==2 ) {
-		return exports.kovahkServerId;
+		return exports.kovahkServerS14Id;
 	}
 	else if (factionColor ==3 ) {
-		return exports.negoreServerId;
+		return exports.negoreServerIdS14;
 	}
 	else if (factionColor ==6 ) {
 		return exports.apheraServerId;
 	}
 	else if (factionColor ==7 ) {
-		return exports.synelleServerId;
+		return exports.synelleServerIdS14;
 	}
 	else if (factionColor ==11 ) {
 		return exports.neoServerS12Id;
 	}
 	else if (factionColor == 4) {
-		return exports.cardanServerS12Id;
+		return exports.cardanServerS14Id;
 	}
 	else if (factionColor == 8) {
 		return exports.seldareServerS12Id;

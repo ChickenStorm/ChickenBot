@@ -40,8 +40,6 @@ exports.adminRoleId = {id:"132106449613619200",name:"Administrateur"}
 exports.modoRoleId = {id:"132114348947537921",name:"Modérateur"}
 exports.verified = {id:"132110152655568896",name:"Vérifié"}
 
-exports.bgRole={id:"271171017689268225", name:"Background"};
-
 exports.getRoleIdByFactionColor = function (color){
     if (color==1) {
 	return {id:"133951475813449728",name:"Empire"};
@@ -136,9 +134,11 @@ exports.kovahk = {id:"265897877241331712",name:"kovahk"}; //2
 exports.nvnerve = {id:"199847043089301505",name:"nvnerve"}; //9
 //exports.seldare = {id:"133975813199495168",name:"seldare"}; //8
 
-exports.empire = {id:"133951475813449728",name:"Empire"}; //1
-
-exports.cardan = {id:"232363292520218624",name:"cardan"}; //4
+//133951475813449728 S 13
+exports.empire = {id:"304645606155091968",name:"Empire"}; //1
+//
+exports.cardan = {id:"304645777848926208",name:"cardan"}; //4
+//232363292520218624 S13
 exports.neo = {id:"232363434853924864",name:"neo"}; //9
 exports.seldare = {id:"232363197334683659",name:"seldare"}; //8
 exports.mago = {id:"232363534514651137",name:"mago"}; //10
@@ -146,12 +146,12 @@ exports.imp = {id:"232362776666963979",name:"imp"}; //12
 
 
 exports.apheraServerRoleId = "265150450465112064"//"168707014615236609";
-exports.kovahkServerRoleId = "265129056293355521"//"168710784493289472";
-exports.synelleServerRoleId = "265144442720223232"//"168706212093755394";
+exports.kovahkServerRoleId = "303916721020862465"//"265129056293355521"//"168710784493289472";
+exports.synelleServerRoleId = "304245935091744768"//"265144442720223232"//"168706212093755394";
 exports.empireServerRoleId = "168712895687950337";
 exports.neoServerRoleId = "168715579467890688";
 
-exports.cardanServerRoleId = "199888091928854528";
+exports.cardanServerRoleId = "304260634353074186"//"199888091928854528";
 exports.seldareServerRoleId = "199868251386150913";
 exports.empireS11ServerRoleId = "199887062613229578";
 exports.nvnerveServerRoleId = "199887253558919169";
@@ -162,11 +162,13 @@ exports.seldareServerRoleIds12 = "230282328323260416"
 exports.magoServerRoleIds12 = "230329080065687552"
 exports.neoServerRoleIds12= "230313452822855680"
 exports.impServerRoleIds12 = "230274263377117184"
-exports.negoreServerRoleId = "265118928315875329";
+exports.negoreServerRoleId = "303916721020862465"//"265118928315875329";
+
+exports.empServerRoleIds14 = "303910262178578443"
 
 exports.getRoleIdByFactionColorFactionServer = function (color){
     if (color==1) {
-	return exports.empireS11ServerRoleId;
+	return exports.empServerRoleIds14;
     }
     if (color==3) {
 	return exports.negoreServerRoleId;
