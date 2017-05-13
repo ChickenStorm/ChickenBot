@@ -2970,6 +2970,55 @@ var commandList = [new commandC(
 				},
 				"!quote", "retourne une citation",truefunc
 			),
+		    new commandC(
+				function(user, userID, channelID, message, rawEvent){
+					if(message=="!Prière" || message=="!prière" || message=="!Priere" || message=="!priere"){
+						return true
+					}
+					else{
+						return false
+					}
+				},
+				function(user, userID, channelID, message, rawEvent){
+						var randomNumberSpetial = Math.random();
+						
+						if (randomNumberSpetial >= 0.995 || (user == "ChickenStorm" && randomNumberSpetial >= 7/8) ) {
+								botSendMessageBis(channelID,"?) Le dieux poulet entend ta prière, il te conseil d'écoute les poulets.");
+						}
+						else{
+								var randomNumber = Math.floor(Math.random()*texts.pray.length)
+								var randomNumberDisplay = randomNumber+1
+								botSendMessageBis(channelID,randomNumberDisplay.toString()+") "+texts.pray[randomNumber]);
+						}
+					//bot.sendMessage({
+					//	to: channelID,
+					//	message: texts.quotes[Math.floor(Math.random()*texts.quotes.length)]
+					//    
+					//});
+				},
+				"!Prière", "Entendez ma prière",truefunc
+			),
+			new commandC(
+				function(user, userID, channelID, message, rawEvent){
+					if(message=="!Dieux" || message=="!dieux"){
+						return true
+					}
+					else{
+						return false
+					}
+				},
+				function(user, userID, channelID, message, rawEvent){
+						
+						botSendMessageBis(channelID,"les dieux : http://asylamba.com/wiki/page-162");
+					//bot.sendMessage({
+					//	to: channelID,
+					//	message: texts.quotes[Math.floor(Math.random()*texts.quotes.length)]
+					//    
+					//});
+				},
+				"!Dieux", "lien wiki des dieux",truefunc
+			),
+			
 		   new commandC(
 				function(user, userID, channelID, message, rawEvent){
 					var voteRegExp = new RegExp("^!vote *")

@@ -100,6 +100,23 @@ exports.quotes=[
     "\"Et ainsi l'Impératrice tourne de l'oeil, un comble vue la galaxie...\"\nZahius -07.09.2016 à 21:35",
 ]
 
+
+exports.pray=[
+	"Ahriman, Dieu des Dieux, Dieu du feu purificateur et de la lumière, accepte de te guider dans cette direction !",
+	"Olaka, Déesse de la clairvoyance, de la sagacité et de l'intelligence, te conseille de réfléchir à deux fois et de relancer une nouvelle prière !",
+	"Gothran, Dieu du commerce, s'inquiète des conséquences économiques de tes actes et t'exhorte d'y renoncer !",
+	"Karn, Dieu du fer, de la guerre, de l’obscurité et des trous noirs, apprécie ta prière, mais elle lui semble bien modérée, sois plus violent et encore plus extrême dans tes actes !",
+	"Marnoka, Déesse des travailleurs et du logis, apprécie ton intervention personnelle, mais réfléchis aux conséquences pour tes peuples et à l'impact potentiel sur la production de leurs ressources, adapte tes actes en fonction !",
+	"Les Dieux peinent à entendre ta demande, relance une prière !",
+	"Athropo, Dieu de la lumière et des étoiles, vous accorde votre demande, à moins qu'un Dieu majeur le contredise!",
+	"Helena, Déesse du voyage et des trous de vers, vous conseille une petite retraite pour y réfléchir!",
+	"Tobias, Gardien du plan divin, n'ose pas vexer Ahriman en répondant à sa place!",
+	"Selenia, Déesse des astres éteints, de la glace, du froid intersidéral et du vide spatial, adore votre suggestion, seule une autre Déesse pourrait la contredire!",
+	"Diserenus, Dieu de la foi divine et du rigorisme, vous appelle à revoir votre copie avec bien plus de rigorisme!",
+	"Gaya, Déesse de la fertilité et du mariage divin et de la bonté bienfaitrice, vous demande d'aimer vos pairs et de tenter de pardonner à ceux qui vous ont fait du mal!",
+	"Byfron, Dieu des morts et des souffrances divines, vous interpelle afin de ne jamais oublier ceux qui sont tombés pour nous!"
+]
+
 //"\" \"\n-"
 /*    (12/05/2016)
 !newquote Lodis (Garion) - Aujourd'hui à 10:06
