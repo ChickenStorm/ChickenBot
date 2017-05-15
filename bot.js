@@ -2986,9 +2986,18 @@ var commandList = [new commandC(
 								botSendMessageBis(channelID,"?) Le dieux poulet entend ta prière, il te conseil d'écoute les poulets.");
 						}
 						else{
-								var randomNumber = Math.floor(Math.random()*texts.pray.length)
-								var randomNumberDisplay = randomNumber+1
+								
+								var randomNumber;
+								if (userID == "132931838841716736") { // SufX (L'Ambassadeur)
+										randomNumber = 3; // not so random
+								}
+								else{
+										randomNumber = Math.floor(Math.random()*texts.pray.length);
+								}
+								
+								var randomNumberDisplay = randomNumber+1;
 								botSendMessageBis(channelID,randomNumberDisplay.toString()+") "+texts.pray[randomNumber]);
+								
 						}
 					//bot.sendMessage({
 					//	to: channelID,
