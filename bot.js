@@ -798,7 +798,7 @@ function getNewUser(data){
 	
 	logDebug("user","userIdAlreadyIn : "+userIdAlreadyIn+"; usernameAlreadyIn : "+usernameAlreadyIn);
 	var returnArray;
-	if (data.serveur == "s13") { // si c'est le bon serveur (on peux pas se log depuis la preprod)
+	if (data.serveur == "s14") { // si c'est le bon serveur (on peux pas se log depuis la preprod)
 		
 		if (usernameAlreadyIn && data.username!= null) { // si un suername est utliser deux fois et que ce n'est pas null
 			
