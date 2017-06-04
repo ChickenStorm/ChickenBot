@@ -40,12 +40,38 @@ exports.adminRoleId = {id:"132106449613619200",name:"Administrateur"}
 exports.modoRoleId = {id:"132114348947537921",name:"Modérateur"}
 exports.verified = {id:"132110152655568896",name:"Vérifié"}
 
+
+exports.negore ={id:"265898695566819329",name:"Negore"};  //3
+//exports.aphera = {id:"168733199306981377",name:"Aphéra"}; //6
+exports.aphera = {id:"265898673014046723",name:"Aphéra"}; //6
+
+exports.synelle = {id:"265898625995898881",name:"synelle"}; //7
+exports.kovahk = {id:"265897877241331712",name:"kovahk"}; //2
+
+//exports.synelle = {id:"168733261093142528",name:"synelle"}; //7
+//exports.kovahk = {id:"168733329087135744",name:"kovahk"}; //2
+
+//exports.cardan = {id:"199846296188616704",name:"cardan"}; //4
+exports.nvnerve = {id:"199847043089301505",name:"nvnerve"}; //9
+//exports.seldare = {id:"133975813199495168",name:"seldare"}; //8
+
+//133951475813449728 S 13
+exports.empire = {id:"304645606155091968",name:"Empire"}; //1
+//
+exports.cardan = {id:"304645777848926208",name:"cardan"}; //4
+//232363292520218624 S13
+exports.neo = {id:"232363434853924864",name:"neo"}; //9
+exports.seldare = {id:"232363197334683659",name:"seldare"}; //8
+exports.mago = {id:"232363534514651137",name:"mago"}; //10
+exports.imp = {id:"232362776666963979",name:"imp"}; //12
+
+
 exports.getRoleIdByFactionColor = function (color){
     if (color==1) {
-	return {id:"133951475813449728",name:"Empire"};
+	return {id:"304645606155091968",name:"Empire"};
     }
     else if (color==8) {
-	return {id:"133975813199495168",name:"Seldare"};
+	return {id:"232363197334683659",name:"Seldare"};
     }
     else if (color==11) {
 	return exports.neo;//{id:"133976248199151616",name:"Neo-Humaniste"};
@@ -80,10 +106,10 @@ exports.getRoleIdByFactionColor = function (color){
 }
 exports.getFactionColorByRoleId = function (roleId){ // retourne 0 si ce n'est pas un faction rôle
     
-    if (roleId=="133951475813449728") {
+    if (roleId=="304645606155091968") {
 	return 1;
     }
-    else if (roleId=="133975813199495168") {
+    else if (roleId=="232363197334683659") {
 	return 8;
     }
     else if (/*roleId=="133976248199151616"*/roleId==exports.neo.id ) {
@@ -120,29 +146,6 @@ exports.getFactionColorByRoleId = function (roleId){ // retourne 0 si ce n'est p
 }
 
 
-exports.negore ={id:"265898695566819329",name:"Negore"};  //3
-//exports.aphera = {id:"168733199306981377",name:"Aphéra"}; //6
-exports.aphera = {id:"265898673014046723",name:"Aphéra"}; //6
-
-exports.synelle = {id:"265898625995898881",name:"synelle"}; //7
-exports.kovahk = {id:"265897877241331712",name:"kovahk"}; //2
-
-//exports.synelle = {id:"168733261093142528",name:"synelle"}; //7
-//exports.kovahk = {id:"168733329087135744",name:"kovahk"}; //2
-
-//exports.cardan = {id:"199846296188616704",name:"cardan"}; //4
-exports.nvnerve = {id:"199847043089301505",name:"nvnerve"}; //9
-//exports.seldare = {id:"133975813199495168",name:"seldare"}; //8
-
-//133951475813449728 S 13
-exports.empire = {id:"304645606155091968",name:"Empire"}; //1
-//
-exports.cardan = {id:"304645777848926208",name:"cardan"}; //4
-//232363292520218624 S13
-exports.neo = {id:"232363434853924864",name:"neo"}; //9
-exports.seldare = {id:"232363197334683659",name:"seldare"}; //8
-exports.mago = {id:"232363534514651137",name:"mago"}; //10
-exports.imp = {id:"232362776666963979",name:"imp"}; //12
 
 
 exports.apheraServerRoleId = "265150450465112064"//"168707014615236609";
