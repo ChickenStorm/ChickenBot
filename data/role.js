@@ -165,7 +165,7 @@ exports.seldareServerRoleIds12 = "230282328323260416"
 exports.magoServerRoleIds12 = "230329080065687552"
 exports.neoServerRoleIds12= "230313452822855680"
 exports.impServerRoleIds12 = "230274263377117184"
-exports.negoreServerRoleId = "303916721020862465"//"265118928315875329";
+exports.negoreServerRoleId = "303901339879211009"//"265118928315875329";
 
 exports.empServerRoleIds14 = "303910262178578443"
 
