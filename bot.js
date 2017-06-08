@@ -3735,19 +3735,19 @@ var commandManage = [
 				"!unban @name", " (modo)",function(user, userID, channelID, message, rawEvent){return isModoFunc(userID)}
 			),
       new commandC(
-       function(user, userID, channelID, message, rawEvent){
-         if(message=="!bug"){
-           return true
-         }
-         else{
-           return false
-         }
-       },
-       function(user, userID, channelID, message, rawEvent){
-         botSendMessageBis(userID,"Pour faire un rapport de bug, allez sur le forum http://asylamba.com/forum/categorie-bug \n\nVous êtes priés d'utiliser ce schéma pour plus de clarté:\nDescription du problème:\nVotre configuration: par exemple: mac/chrome Version 58.0.3029.110 (64-bit)\nnom complet in Game:\nUrgence : par exemple: basse (non bloquant), moyenne (bloquant, mais peux encore jouer), haute (ne peux plus jouer)\nLien sur capture d'écran: vous pouvez utiliser https://ibb.co/ pour héberger vos images");
-       },
-       "!bug", "Envoi d'un rapport de bug",truefunc
-      )
+		function(user, userID, channelID, message, rawEvent){
+			if(message=="!bug"){
+				return true
+			}
+			else{
+				return false
+			}
+		},
+		function(user, userID, channelID, message, rawEvent){
+			botSendMessageBis(userID,"Pour faire un rapport de bug, allez sur le forum http://asylamba.com/forum/categorie-bug \n\nVous êtes priés d'utiliser ce schéma pour plus de clarté:\nDescription du problème:\nVotre configuration: par exemple: mac/chrome Version 58.0.3029.110 (64-bit)\nnom complet in Game:\nUrgence : par exemple: basse (non bloquant), moyenne (bloquant, mais peux encore jouer), haute (ne peux plus jouer)\nLien sur capture d'écran: vous pouvez utiliser https://ibb.co/ pour héberger vos images");
+		},
+		"!bug", "Envoi d'un rapport de bug",truefunc
+	)
 
 ]
 
