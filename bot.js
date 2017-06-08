@@ -25,12 +25,12 @@ This file is part of Chicken Bot.
 //'use strict';
 
 var http = require('http'); // pour le serveur http
-var url = require("url"); 
-var querystring = require('querystring'); 
+var url = require("url");
+var querystring = require('querystring');
 var DiscordClient = require('discord.io'); // API discord
 var os = require('os'); // os pour les retour à la ligne
 var fs = require("fs"); // file système pour lire / écire dans des fichier
-var userList =  require('./data/user.js'); 
+var userList =  require('./data/user.js');
 var role = require('./data/role.js');
 var servers = require('./data/servers.js');
 var texts=require('./data/texts-facts.js')
@@ -46,7 +46,7 @@ var forceDisable = false; // au mieux les deux ne sont pas a true en même temps
 // sinon c'est forceDisable qui prime
 var statusRefreshIntervalRef; // ref du setTimout pour le refresh du statu
 
-var statusRefreshInterval = 60000; //in millisecond 
+var statusRefreshInterval = 60000; //in millisecond
 //1000000 (1000 sec => 16.6667 minutes)
 
 var roleServerAssingIntervalRef; // référence de l'interval pour ajouter les rôle au serveur qui n'est pas le root
@@ -71,7 +71,7 @@ var isInMaintenance = false
 var invitationPrefix= "https://discord.gg"
 /*********************************************************************/
 
-var roleListId =[]; 
+var roleListId =[];
 var roleListName=[];
 
 var sendData=true; // si le bot envoi des donné sur le serveur http
@@ -81,7 +81,7 @@ var debug = true; // fait les log de débug (peux diminuer les capacité)
 var loginGet = [] // login pour les reqête get qui sera demander
 var switchStatusMessage // function
 
-var posTemp; // position pour envoyer l'invitation 
+var posTemp; // position pour envoyer l'invitation
 // TODO more reliable
 /****************************************************************************/
 
@@ -112,7 +112,7 @@ Object.defineProperty(global, '__line', {
 // trouvé sur le net
 
 var getClientAddress = function (req) {
-        return (req.headers['x-forwarded-for'] || '').split(',')[0] 
+        return (req.headers['x-forwarded-for'] || '').split(',')[0]
         || req.connection.remoteAddress;
 };
 
@@ -134,7 +134,7 @@ fs.readFile('loginServeur.txt','ascii', function (err, data) { // lit les login 
 		tencBot = dataTenc;
 		dataTenc = "";
 		fs.readFile('data/vote.json','utf8', function (err, data) { // lit la liste des votes
-			
+
 			//try{
 				voteArray = JSON.parse(data.toString('utf8')); // parse
 			//}
@@ -154,7 +154,7 @@ fs.readFile('loginServeur.txt','ascii', function (err, data) { // lit les login 
 			});
 		});
 	});
-	
+
 });
 
 function backup() {
@@ -176,7 +176,7 @@ function botSendMessage(args){
 			message: args[1]
 		});
 	},args)*/
-	
+
 	bot.sendMessage({
 		to: args[0],
 		message: args[1]
@@ -189,11 +189,11 @@ function botSendMessageBis(chanID,message){
 	 * args[1] : message
 	 */
 	botSendMessage([chanID,message]);
-	
+
 }
 
 function botAddToRole(args2){
-	
+
 	/**
 	 * args[0] : serverID
 	 * args[1] : userID
@@ -206,12 +206,12 @@ function botAddToRole(args2){
 			role: args[2]
 		});
 	},args2)
-	
+
 }
 function botAddToRoleBis(serverID,userID,roleID){
 	botAddToRole([serverID,userID,roleID]);
-	
-	
+
+
 }
 
 function botRemoveFromRole(args2){
@@ -241,7 +241,7 @@ function writeUserList() {
 /*******************************************************************/
 
 function initBot(){ // initilisation du bot et des différents callbacks
-	
+
 	logDebug("systeme","[init] bot initialisation");
 	bot = new DiscordClient({ // login
 	    autorun: true,
@@ -253,7 +253,7 @@ function initBot(){ // initilisation du bot et des différents callbacks
 	passwordBot="";
 	tencBot = "";
 	emailBot = "";
-	
+
 	switchStatusMessage = function (){ // change le message du bot (sous playing) selon les différents types d'activation
 		console.log("refresh status");
 		logDebug("status","refresh status");
@@ -291,19 +291,19 @@ function initBot(){ // initilisation du bot et des différents callbacks
 		}
 	}
 
-	
+
 	bot.on('ready', function() { // quand le bot est pret
 		isConnected = true;
 		console.log(bot.username + " - (" + bot.id + ")");
 		logDebug("système","bot ready");
-		
-		
+
+
 		switchStatusMessage();
 		updateUserSlow();
 		banManager();
 		//backup();
-		
-		
+
+
 		clearInterval(statusRefreshIntervalRef);
 		statusRefreshIntervalRef = setInterval(
 						       function(){
@@ -319,14 +319,14 @@ function initBot(){ // initilisation du bot et des différents callbacks
 			if (err) throw err;
 			//console.log('The "data to append" was appended to file!');
 		});*/
-		
-		
+
+
 		for (var i in bot["servers"][discordServeurId]["roles"]){
 			roleListId.push(i);
 			roleListName.push(bot["servers"][discordServeurId]["roles"][i]["name"])
 		}
 	});
-	
+
 	/*bot.on('message', function(user, userID, channelID, message, rawEvent) {
 	fs.appendFile('message.txt', 'user : '+user +'; userID : '+userID+'; channelID : '+channelID+'; message : '+message+os.EOL, function (err) {
 	  if (err) throw err;
@@ -353,26 +353,26 @@ function initBot(){ // initilisation du bot et des différents callbacks
 			}
 		},connectTryInterval)
 	});
-	
-	
+
+
 	bot.on('message', function(user, userID, channelID, message, rawEvent) { // quand un message est envoyer sur une chan ou le bot est
-		
-		
+
+
 		for(var i in commandManage){ // regarde sur les commandes qui ne sont pas désactivées même si le bot est désactivé
 			if (commandManage[i].testInput(user, userID, channelID, message, rawEvent)) {
 				commandManage[i].func(user, userID, channelID, message, rawEvent); // exécute la commande si la condition correcte est verifiée
 				logDebug("message","command " + message);
 			}
 		}
-		if (!forceDisable && (enable || forceEnable)) { // si le bot est activé ou qu'il est forcé d'être activé et qu'il n'est pas forcé d'être désactivé 
-			
+		if (!forceDisable && (enable || forceEnable)) { // si le bot est activé ou qu'il est forcé d'être activé et qu'il n'est pas forcé d'être désactivé
+
 			for(var i in commandList){
 				if (commandList[i].testInput(user, userID, channelID, message, rawEvent)) {
 					commandList[i].func(user, userID, channelID, message, rawEvent); // exécute la commande si la condition correcte est verifiée
 					logDebug("message","command " + message);
 				}
 			}
-			
+
 		}
 		if (isInMaintenance && isAdminFunc(userID)) {
 			for(var i in commandMaintenance){
@@ -381,12 +381,12 @@ function initBot(){ // initilisation du bot et des différents callbacks
 					logDebug("message","command " + message);
 				}
 			}
-			
+
 		}
-		
+
 	});
-	
-	
+
+
 }
 
 
@@ -394,31 +394,31 @@ function initBot(){ // initilisation du bot et des différents callbacks
 function roleServerAssing(){
 	for (var i in userListFaction){
 		if (userListFaction[i].pendingRole!= undefined) {
-			
-			
-			
+
+
+
 			var newPendingRole=[];
 			for (var j in userListFaction[i].pendingRole){
 				var serverWorking = userListFaction[i].pendingRole[j].serverId;
-				
+
 				var hasAdd = false;
 				for (var us in bot.servers[serverWorking].members){
 					if (us == userListFaction[i].userID) {
-						
+
 						hasAdd = true
 						botAddToRoleBis(serverWorking,us,userListFaction[i].pendingRole[j].roleId);
-						
-						
-						
+
+
+
 					}
 				}
 				if (!hasAdd) {
 					newPendingRole.push(userListFaction[i].pendingRole[j]);
 				}
 			}
-			
+
 			userListFaction[i].pendingRole = newPendingRole
-			
+
 		}
 	}
 }
@@ -433,12 +433,12 @@ function UserObject(userIDP,serveurP,usernameP,factionColorP,isAdminP,isModoP,is
 	this.isAdmin=isAdminP;  // est un admin discord
 	this.isModo=isModoP;// est un modo discord
 	this.isBan=isBanP; // est banni sur discord (not implemented yet)
-	this.isInGouv=isInGouvP; // est dans le gouv dans asylamba 
+	this.isInGouv=isInGouvP; // est dans le gouv dans asylamba
 	this.dateOfRegister=dateP; // date d'enregistrement (le dernier)
 	this.isVerifed = isVerifedP; // est verifié
 	this.roleBeforeBan = []; // les rôle avant le ban
 	this.banCount =0; // le nombre de ban eu
-	this.banUntil =-1; // date jusqu'à ce que l'utilisateur soit déban 
+	this.banUntil =-1; // date jusqu'à ce que l'utilisateur soit déban
 	this.banReason = ""; // la raison du ban
 	this.avertissement =0;
 	this.pendingRole=[]; // rôle to add when users comme to new server
@@ -450,10 +450,10 @@ function UserObject(userIDP,serveurP,usernameP,factionColorP,isAdminP,isModoP,is
 // peux être utiliser ça comme interface admin du bot => done
 
 var server = http.createServer(function(request, response) { // creation du serveru http
-	
+
 	var page = url.parse(request.url).pathname; // parse l'url pour trouvé la page
 	//var params = querystring.parse(url.parse(req.url).query);
-	
+
 	//logHttp("recive message "+CircularJSON.stringify(request));
 	logHttp("recive message from IP "+getClientAddress(request) +"; with header : "+JSON.stringify(request.headers));
 	//console.log(page);
@@ -461,30 +461,30 @@ var server = http.createServer(function(request, response) { // creation du serv
 		//logDebug("http","recive POST");
 		var body = '';
 		request.setEncoding('utf8');
-		
+
 		request.on('data', function (data) {
 			body += data;
 			// Too much POST data, kill the connection!
 			// 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
-		    
+
 			if (body.length > 1e6){ // si on a trop de donné
-				request.connection.destroy(); 
+				request.connection.destroy();
 				response.writeHead(413, 'Request Entity Too Large', {'Content-Type': 'text/plain'});
 				response.end('');
 			}
 			else{
-				
+
 			}
-		    
+
 		});
 		var post
 		request.on('end', function () { // à la fin
-			
+
 			/*if (true) {
 				var succesfullParsing = true
 				bodyParsed =  {discordId:"110682291109412864",server:"s10",username:"Esronix",factionColor:6}
 			}*/
-			
+
 			post = querystring.parse(body);
 			var bodyParsed = null;
 			var succesfullParsing; //boolean
@@ -497,14 +497,14 @@ var server = http.createServer(function(request, response) { // creation du serv
 			}
 			logHttp("POST on"+page);
 			logHttp("body : "+JSON.stringify( body));
-			
+
 			//TODO critical
-			
-			
-			
+
+
+
 			if (page == "/register") { // si c'est pour le register (enregistrement d'un nouevaux joueur)
 				logDebug("http","POST on");
-				
+
 				if (succesfullParsing && bodyParsed!=undefined && bodyParsed!=null &&bodyParsed.discordId != undefined && bodyParsed.server!= undefined&& bodyParsed.username!= undefined && bodyParsed.factionColor!= undefined) {
 					// si les donné eson valide
 					var newUser = new UserObject(bodyParsed.discordId,bodyParsed.server,bodyParsed.username,bodyParsed.factionColor,false,false,false,false,Date.now(),true);
@@ -519,9 +519,9 @@ var server = http.createServer(function(request, response) { // creation du serv
 						isInGouv:false,
 						dateOfRegister:Date.now()
 					};*/
-					
+
 					arrayResult = getNewUser(newUser); // enregistre l'utilisateur
-					
+
 					response.writeHead(arrayResult.number, {'Content-Type': 'text/plain'});
 					response.write(arrayResult.desc);
 					response.end();
@@ -535,16 +535,16 @@ var server = http.createServer(function(request, response) { // creation du serv
 						response.write("Thanks for the data");
 						response.end();
 					}*/
-					
-					
-					
+
+
+
 				}
 				else if(succesfullParsing){
-					
+
 					logHttp("data ill-formed");
 					response.writeHead(400, {'Content-Type': 'text/plain'});
 					response.end("Bad Request : data illformed")
-					
+
 				}
 				else{
 					logHttp("cannot parse data");
@@ -557,10 +557,10 @@ var server = http.createServer(function(request, response) { // creation du serv
 				response.writeHead(404, {'Content-Type': 'text/plain'});
 				response.end("Not found")
 			}
-			
+
 		});
-		
-		
+
+
 	}
 	else if (request.method == "GET") { // si la methode est GET
 		logHttp("GET on page "+page);
@@ -568,12 +568,12 @@ var server = http.createServer(function(request, response) { // creation du serv
 		//console.log("-------");
 		var credentials = auth(request) // Basic authentification
 		//console.log(credentials)
-		
+
 		//var regSimuData = new RegExp ("\/simulateur\\?*");
 		var regSimu = new RegExp ("\\/simulateur");
 		if (page == "" || page =="/") { // main page
-			
-			fs.readFile("./http-page/accueil-page.html",'utf8', function (err, data) { // 
+
+			fs.readFile("./http-page/accueil-page.html",'utf8', function (err, data) { //
 				if (err) {
 					response.writeHead(404, {'Content-Type': 'text/plain'});
 					response.end("Not found");
@@ -582,25 +582,25 @@ var server = http.createServer(function(request, response) { // creation du serv
 				else{
 					logHttp("return main page")
 					var dataToSend = data;
-					
+
 					response.writeHead(200, {'Content-Type': 'text/html'});
 					response.end(dataToSend);
 				}
 			});
-			
-			
+
+
 		}
 		else if (page=="/log/log.txt" || page =="/data/user.json" || page =="/data/vote.json" || page=="/log/log-debug.txt" || page == "/log/log-http.txt") {
-			
-			
-			
-			
+
+
+
+
 			//console.log(page)
 			//					  verification sur le type             verification sur le type
 			if (!sendData || !credentials || credentials.name !== loginGet[0] || credentials.pass !== loginGet[1] ) { // si les log sont faux
 				if (!credentials) { // s'il n'y pa pas de login du tout
 					//            page de log
-					fs.readFile("./http-page/log.html",'utf8', function (err, data) { // 
+					fs.readFile("./http-page/log.html",'utf8', function (err, data) { //
 						if (err) {
 							response.writeHead(404, {'Content-Type': 'text/plain'});
 							response.end("Not found");
@@ -610,7 +610,7 @@ var server = http.createServer(function(request, response) { // creation du serv
 							//remplacement de #TextPageToChange# par l'url de la page sans le / initiale
 							// permet que la reqête se fait au bon endroit (sans utiliser de mutiple if pour chaque page)
 							var dataToSend = data.replace("#TextPageToChange#",page.substring(1,page.length));
-							
+
 							response.writeHead(401, {'Content-Type': 'text/html'});
 							response.end(dataToSend);
 							logHttp("Unauthorized, send login page")
@@ -641,7 +641,7 @@ var server = http.createServer(function(request, response) { // creation du serv
 					}
 				});
 			}
-			
+
 		}
 		else if (page == "/admin") {
 			if (!sendData || !credentials || credentials.name !== loginGet[0] || credentials.pass !== loginGet[1] ) { // si les log sont faux
@@ -655,7 +655,7 @@ var server = http.createServer(function(request, response) { // creation du serv
 						else{
 							//remplacement de #TextPageToChange# par admin (url pour la requête)
 							var dataToSend = data.replace("#TextPageToChange#","admin");
-							
+
 							response.writeHead(401, {'Content-Type': 'text/html'});
 							response.end(dataToSend);
 							logHttp("Unauthorized, send login page")
@@ -683,7 +683,7 @@ var server = http.createServer(function(request, response) { // creation du serv
 						response.writeHead(200, {'Content-Type': 'text/html'});
 						response.end(dataToSend);
 						logHttp("send data")
-						
+
 					}
 				});
 			}
@@ -691,7 +691,7 @@ var server = http.createServer(function(request, response) { // creation du serv
 		else if (page == "/admin/data") {
 			// pas utiliser
 			response.writeHead(404, {'Content-Type': 'text/plain'});
-			
+
 			response.end("Not found")
 			logHttp("not found")
 			/*if (!sendData || !credentials || credentials.name !== loginGet[0] || credentials.pass !== loginGet[1] ) {
@@ -700,7 +700,7 @@ var server = http.createServer(function(request, response) { // creation du serv
 				logHttp("Forbidden")
 			}
 			else{
-				
+
 				response.writeHead(200, {'Content-Type': 'text/plain'});
 				response.end("WIP");
 				logHttp("send Data")
@@ -720,7 +720,7 @@ var server = http.createServer(function(request, response) { // creation du serv
 					response.writeHead(200, {'Content-Type': 'text/html'});
 					response.end(dataToSend);
 					logHttp("send data")
-					
+
 				}
 			});
 		}
@@ -739,26 +739,26 @@ var server = http.createServer(function(request, response) { // creation du serv
 					response.writeHead(200, {'Content-Type': 'text/html'});
 					response.end(dataToSend);
 					logHttp("send data")
-					
+
 				}
 			});
 		}
 		else{
 			response.writeHead(404, {'Content-Type': 'text/plain'});
-			
+
 			response.end("Not found")
 			logHttp("not found")
 		}
 	//});
-	
+
     }
     else{
 	response.writeHead(404, {'Content-Type': 'text/plain'});
-	
+
 	response.end("Bad Request")
 	logHttp("Bad Request ("+request.method+")");
-	
-	
+
+
   }
 });
 
@@ -767,18 +767,18 @@ function getNewUser(data){
 	 * gère les utilisateurs
 	 * les donné de l'utilisateur sont dans data
 	 * exécute l'enregistremment et donne le / les rôles approprier
-	 * 
+	 *
 	 */
-	
+
 	logDebug("user","getNewUser : "+ JSON.stringify(data));
-	
+
 	var usernameAlreadyIn = false; // si le username d'asylmaba est dedans déjà
 	var userIdAlreadyIn = false; // si l'id de l'utilisateur est déjà enregistrer dans le bot
 	var userInDiscordServeur=false; // si l'utilisateur est dans le serv discord
 	var posUser =0; // pos de l'user dans le bot
 	// array des id qui ont lemême username d'aslymba
 	var arrayUserSameUserName=[];//=[data.userID];
-	
+
 	for (var i in userListFaction){ // check au travet de la list
 		if (data.username == userListFaction[i].username) {
 			usernameAlreadyIn = true;
@@ -789,47 +789,47 @@ function getNewUser(data){
 			posUser = i;
 		}
 	}
-	
+
 	for (var i in bot["servers"][discordServeurId]["members"]){ // regarde au travert de la list des membre du serveur
 		if (i == data.userID) {
 			userInDiscordServeur = true;
 		}
 	}
-	
+
 	logDebug("user","userIdAlreadyIn : "+userIdAlreadyIn+"; usernameAlreadyIn : "+usernameAlreadyIn);
 	var returnArray;
 	if (data.serveur == "s14" || data.serveur == "s18") { // si c'est le bon serveur (on peux pas se log depuis la preprod)
-		
+
 		if (usernameAlreadyIn && data.username!= null) { // si un suername est utliser deux fois et que ce n'est pas null
-			
+
 			var dateString = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''); // date avec un bon format text
 			if (arrayUserSameUserName.length>1) { // si c'est pour plus d'unutilisateur
-				
-				
+
+
 				log("send message","["+dateString+"] [Warning] [role] le même nom pseudo ingame ("+data.username+") a été utilisé pour <@"+arrayUserSameUserName.join("> <@")+"> la tentative n'a cependant pas été bloquée");
-				
-				
+
+
 				// log des message de warning dans le salon #bot-log
 				botSendMessage([channel.botLogChannelId,"["+dateString+"] [Warning] [role] le même nom pseudo ingame ("+data.username+") a été utilisé pour <@"+arrayUserSameUserName.join("> <@")+"> la tentative n'a cependant pas été bloquée"])
-				
+
 			}
 			else{
 				log("send message","["+dateString+"] [Warning] [role] un joueur s'est authentifié 2 fois ou plus ("+data.username+") <@"+arrayUserSameUserName.join("> <@")+">");
-				
+
 				botSendMessage([channel.botLogChannelId,"["+dateString+"] [Warning] [role] un joueur s'est authentifié 2 fois ou plus ("+data.username+") <@"+arrayUserSameUserName.join("> <@")+">"]);
 				// log des message de warning dans le salon #bot-log
-				
+
 			}
 		}
-		
-		if (!userIdAlreadyIn) { // si l'utilisateur n'est pas encore enregistrer 
-			
-			log("new user",JSON.stringify(data)); 
-			
+
+		if (!userIdAlreadyIn) { // si l'utilisateur n'est pas encore enregistrer
+
+			log("new user",JSON.stringify(data));
+
 			if (true /*data.factionColor==1 || data.factionColor==2 || data.factionColor==6 || data.factionColor==7 || data.factionColor==11 || data.factionColor==9 || data.factionColor==4 || data.factionColor==8*/ ) { // si on a les bonne couleur de faction (TODO faire une fonction)
-				
-				
-				
+
+
+
 				data.pendingRole.push({roleId:role.getRoleIdByFactionColorFactionServer(data.factionColor),serverId:servers.getServerIdFromFactionColor(data.factionColor)}); // TODO
 				userListFaction.push(data); // ajoute l'utilisateur
 				posTemp = userListFaction.length-1;
@@ -842,21 +842,21 @@ function getNewUser(data){
 						xkcdpass: false //Optional
 					 },function(error, response){
 						if (error == undefined) {
-							
-							// TODO  more reliable methode 
+
+							// TODO  more reliable methode
 							botSendMessageBis(userListFaction[postemp].userID,"Voici votre lien d'invitation pour le server de votre faction Asylamba "+invitationPrefix+"/"+response.code)
 						}
 					 }
 				);
-				
+
 				returnArray ={number:200,desc:"user register correctly"};
-				
+
 				if (userInDiscordServeur) {
 					// ajoute l'utilisateur à verifié
 					botAddToRole([discordServeurId,data.userID,role.verified.id]);
-					
+
 					logDebug("role","add user to verifie");
-					
+
 					pendingOperation.addOpperation(function(args){
 						var discordServeurId = args[1];
 						var data = args[0]
@@ -875,10 +875,10 @@ function getNewUser(data){
 					},[data,discordServeurId])
 				}
 				else{
-					
-					
+
+
 					//botSendMessageBis(userListFaction[userListFaction.length-1].userID,)
-					
+
 					bot.createInvite({
 						channel: discordServeurId,
 						max_users: 30, //Optional
@@ -887,7 +887,7 @@ function getNewUser(data){
 						xkcdpass: false //Optional
 					 },function(error, response){
 						if (error == undefined) {
-							// TODO  more reliable methode 
+							// TODO  more reliable methode
 							botSendMessageBis(userListFaction[posTemp].userID,"Voici votre lien d'invitation pour le server discord générale d'Asylamba "+invitationPrefix+"/"+response.code)
 						}
 						else{
@@ -895,38 +895,38 @@ function getNewUser(data){
 						}
 					 }
 					 );
-					
-					
+
+
 					userListFaction[userListFaction.length-1].pendingRole.push({roleId:role.verified.id,serverId:discordServeurId});
 					userListFaction[userListFaction.length-1].pendingRole.push({roleId:role.getRoleIdByFactionColor(data.factionColor).id,serverId:discordServeurId});
 				}
-				
-				
-				
+
+
+
 			}
 			else{
 				logDebug("user","wrong faction");
 				returnArray ={number:200,desc:"Wrong factionColor"};
 			}
-			
-			
+
+
 		}
 		else if (userIdAlreadyIn) { // si l'user est déjà dedans
-			
+
 			log("userIdAlreadyIn",JSON.stringify(data));
-			
+
 			returnArray ={number:200,desc:"user register correctly (update Status)"};
 			if ( isBanFunc(userListFaction[posUser].userID)) {
 				log("role","user try to get new role but he his banned")
 				if (data.username != userListFaction[posUser].username) {// si l'username est différent
 					log("Register user change","user id "+userListFaction[posUser].userID+" change username form "+userListFaction[posUser].username+" to "+data.username);
-					userListFaction[posUser].username = data.username; // update l'username 
+					userListFaction[posUser].username = data.username; // update l'username
 				}
 			}
 			else{
-				
+
 				botAddToRoleBis(discordServeurId,data.userID,role.verified.id);
-				/*bot.addToRole({ // ajoute l'utilisateur à verifier 
+				/*bot.addToRole({ // ajoute l'utilisateur à verifier
 					server: discordServeurId,
 					user: data.userID,
 					role: role.verified.id
@@ -934,14 +934,14 @@ function getNewUser(data){
 				logDebug("role","add user to verifie");
 				if (data.username != userListFaction[posUser].username) {// si l'username est différent
 					log("Register user change","user id "+userListFaction[posUser].userID+" change username form "+userListFaction[posUser].username+" to "+data.username);
-					userListFaction[posUser].username = data.username; // update l'username 
+					userListFaction[posUser].username = data.username; // update l'username
 				}
 				// si la couleur de facrion est différente et qu'elle n'est pas undefined au départ
 				// => l'utilisateur essaye de changer de faction => on bloque
 				if ( userListFaction[posUser].factionColor!=undefined && userListFaction[posUser].factionColor!=null && userListFaction[posUser].factionColor!=0 && data.factionColor!=userListFaction[posUser].factionColor ) {
-					
-					var supMessage = ""; // liste des @admin 
-					
+
+					var supMessage = ""; // liste des @admin
+
 					if (userListFaction != undefined) {
 						for(var i in userListFaction){
 							if ( userListFaction[i].isAdmin) {
@@ -949,29 +949,29 @@ function getNewUser(data){
 							}
 						}
 					}
-					
-					
+
+
 					var dateString = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 					// envoi un message dans #bot-log
 					var mToSend = "["+dateString+"] [Warning] [role] un utilisateur a essayé de changer de faction : <@"+data.userID+"> de la faction " +userListFaction[posUser].factionColor+" à la faction "+data.factionColor +"\n "+supMessage;
 					botSendMessageBis(channel.botLogChannelId,mToSend)
-					
-					
-					
+
+
+
 					returnArray ={number:200,desc:"disord user already register"};
 					log("send message","["+dateString+"] [Warning] [role] un utilisateur a essayé de changer de faction : <@"+data.userID+"> de la faction " +userListFaction[posUser].factionColor+" à la faction "+data.factionColor + "\n " + supMessage);
-					
-					
+
+
 				}
 				else if(data.factionColor!=userListFaction[posUser].factionColor){
 					// si la faction passe de undefined à un numéro correct
-					
+
 					//userListFaction[posUser].factionColor = data.factionColor;
 					log("userIdAlreadyIn",JSON.stringify(data));
-					
+
 					log("Register user change","user id "+userListFaction[posUser].userID+" change faction form "+userListFaction[posUser].factionColor+" to "+data.factionColor);
-					
-					
+
+
 					pendingOperation.addOpperation(function(data){
 						var roleToAdd = role.getRoleIdByFactionColor(data.factionColor);
 						if (roleToAdd.id == undefined) {
@@ -985,8 +985,8 @@ function getNewUser(data){
 							});
 						}
 					},data)
-					
-					
+
+
 					pendingOperation.addOpperation(function(data){
 						var roleToAdd = role.getRoleIdByFactionColor(fColor);
 						if (roleToAdd.id == undefined) {
@@ -1003,9 +1003,9 @@ function getNewUser(data){
 					if (userListFaction[posUser].pendingRole == undefined) {
 						userListFaction[posUser].pendingRole =[];
 					}
-					
+
 					posTemp = posUser;
-					
+
 					bot.createInvite({
 						channel: servers.getServerIdFromFactionColor(data.factionColor),
 						max_users: 30, //Optional
@@ -1015,7 +1015,7 @@ function getNewUser(data){
 					 },function(error, response){
 						if (error == undefined) {
 							console.log(posTemp);
-							// TODO  more reliable methode 
+							// TODO  more reliable methode
 							botSendMessageBis(userListFaction[posTemp].userID,"Voici votre lien d'invitation pour le server de votre faction Asylamba "+invitationPrefix+"/"+response.code)
 						}
 						else{
@@ -1023,9 +1023,9 @@ function getNewUser(data){
 						}
 					 }
 				);
-					
+
 					userListFaction[posUser].pendingRole.push({roleId:role.getRoleIdByFactionColorFactionServer(data.factionColor),serverId:servers.getServerIdFromFactionColor(data.factionColor)}); // TODO
-					
+
 					userListFaction[posUser].factionColor = data.factionColor; // upadte dans la list
 					returnArray ={number:200,desc:"user register correctly (update Status)"};
 				}
@@ -1048,32 +1048,32 @@ function getNewUser(data){
 			logDebug("error","[user] [role] didin't pass any test ? => 500 : Internal Server Error(at ligne "+__line+" bot.js)");
 			returnArray ={number:500,desc:"Internal Server Error"};
 		}
-		
-		
-		
-		
-		
+
+
+
+
+
 		/***********************************************************/
-		
-		
-		
-		
-		
+
+
+
+
+
 	}
 	else if (data.serveur == "s9") {
-		
+
 	}// désactivé
 	else if (false && data.serveur == "s9") { // si c'est le bon serveur (on peux pas se log depuis la preprod)
-		
+
 		if (usernameAlreadyIn && data.username!= null) { // si un suername est utliser deux fois et que ce n'est pas null
-			
+
 			var dateString = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''); // date avec un bon format text
 			if (arrayUserSameUserName.length>1) { // si c'est pour plus d'unutilisateur
-				
-				
+
+
 				log("send message","["+dateString+"] [Warning] [role] le même nom pseudo ingame ("+data.username+") a été utilisé pour <@"+arrayUserSameUserName.join("> <@")+"> la tentative n'a cependant pas été bloquée");
-				
-				
+
+
 				// log des message de warning dans le salon #bot-log
 				botSendMessage([channel.botLogChannelId,"["+dateString+"] [Warning] [role] le même nom pseudo ingame ("+data.username+") a été utilisé pour <@"+arrayUserSameUserName.join("> <@")+"> la tentative n'a cependant pas été bloquée"])
 				/*bot.sendMessage({
@@ -1083,7 +1083,7 @@ function getNewUser(data){
 			}
 			else{
 				log("send message","["+dateString+"] [Warning] [role] un joueur s'est authentifié 2 fois ou plus ("+data.username+") <@"+arrayUserSameUserName.join("> <@")+">");
-				
+
 				botSendMessage([channel.botLogChannelId,"["+dateString+"] [Warning] [role] un joueur s'est authentifié 2 fois ou plus ("+data.username+") <@"+arrayUserSameUserName.join("> <@")+">"]);
 				// log des message de warning dans le salon #bot-log
 				/*bot.sendMessage({
@@ -1092,17 +1092,17 @@ function getNewUser(data){
 				});*/
 			}
 		}
-		
+
 		if (!userIdAlreadyIn && userInDiscordServeur) { // si l'utilisateur n'est pas encore enregistrer mais qu'il est sur le serveur
-			
-			log("new user",JSON.stringify(data)); 
-			
+
+			log("new user",JSON.stringify(data));
+
 			if (true/*data.factionColor==1 || data.factionColor==8 || data.factionColor==11*/) { // si on a les bonne couleur de faction (TODO faire une fonction)
 				userListFaction.push(data); // ajoute l'utilisateur
 				//fs.writeFile("./data/user.json",JSON.stringify(userListFaction),function (err) {}); // écrit dans le fichier de stoquage
-				
+
 				returnArray ={number:200,desc:"user register correctly"};
-				
+
 				// ajoute l'utilisateur à verifié
 				botAddToRole([discordServeurId,data.userID,role.verified.id]);
 				/*bot.addToRole({
@@ -1110,10 +1110,10 @@ function getNewUser(data){
 					user: data.userID,
 					role: role.verified.id // TODO variable
 				});*/
-				
+
 				logDebug("role","add user to verifie");
 				// timout pour des raison d'API qui ne vas ajouté qu'à un seul role si les demandes sont trop proches
-				
+
 				pendingOperation.addOpperation(function(args){
 					var discordServeurId = args[1];
 					var data = args[0]
@@ -1130,10 +1130,10 @@ function getNewUser(data){
 						});
 					}
 				},[data,discordServeurId])
-				
+
 				//setTimeout(function(data){
 				//	/*if (data.factionColor==1) {
-				//		
+				//
 				//		bot.addToRole({
 				//			server: discordServeurId,
 				//			user: data.userID,
@@ -1142,17 +1142,17 @@ function getNewUser(data){
 				//		logDebug("role","add user to Empire");
 				//	}
 				//	else if (data.factionColor==8) {
-				//		
+				//
 				//		bot.addToRole({
 				//			server: discordServeurId,
 				//			user: data.userID,
 				//			role: "133975813199495168"
 				//		});
 				//		logDebug("role","add user to Ligue");
-				//		
+				//
 				//	}
 				//	else if (data.factionColor==11) {
-				//		
+				//
 				//		bot.addToRole({
 				//			server: discordServeurId,
 				//			user: data.userID,
@@ -1163,7 +1163,7 @@ function getNewUser(data){
 				//	else{
 				//		logDebug("Warning","[role] add user to nothing (this may be an error)");
 				//	}*/
-				//	
+				//
 				//	// récupère le rôle approrier
 				//	var roleToAdd = role.getRoleIdByFactionColor(data.factionColor);
 				//	if (roleToAdd.id == undefined) { // si la couleur de faction n'est pas correct
@@ -1178,31 +1178,31 @@ function getNewUser(data){
 				//		});
 				//	}
 				//},1000,data);
-				
+
 			}
 			else{
 				logDebug("user","wrong faction");
 				returnArray ={number:200,desc:"Wrong factionColor"};
 			}
-			
-			
+
+
 		}
 		else if (userIdAlreadyIn) { // si l'user est déjà dedans
-			
+
 			log("userIdAlreadyIn",JSON.stringify(data));
-			
+
 			returnArray ={number:200,desc:"user register correctly (update Status)"};
 			if ( isBanFunc(userListFaction[posUser].userID)) {
 				log("role","user try to get new role but he his banned")
 				if (data.username != userListFaction[posUser].username) {// si l'username est différent
 					log("Register user change","user id "+userListFaction[posUser].userID+" change username form "+userListFaction[posUser].username+" to "+data.username);
-					userListFaction[posUser].username = data.username; // update l'username 
+					userListFaction[posUser].username = data.username; // update l'username
 				}
 			}
 			else{
-				
+
 				botAddToRoleBis(discordServeurId,data.userID,role.verified.id);
-				/*bot.addToRole({ // ajoute l'utilisateur à verifier 
+				/*bot.addToRole({ // ajoute l'utilisateur à verifier
 					server: discordServeurId,
 					user: data.userID,
 					role: role.verified.id
@@ -1210,18 +1210,18 @@ function getNewUser(data){
 				logDebug("role","add user to verifie");
 				if (data.username != userListFaction[posUser].username) {// si l'username est différent
 					log("Register user change","user id "+userListFaction[posUser].userID+" change username form "+userListFaction[posUser].username+" to "+data.username);
-					userListFaction[posUser].username = data.username; // update l'username 
+					userListFaction[posUser].username = data.username; // update l'username
 				}
 				// si la couleur de facrion est différente et qu'elle n'est pas undefined au départ
 				// => l'utilisateur essaye de changer de faction => on bloque
 				if ( userListFaction[posUser].factionColor!=undefined && userListFaction[posUser].factionColor!=null && userListFaction[posUser].factionColor!=0 && data.factionColor!=userListFaction[posUser].factionColor ) {
 					//log("Register user change","user id "+userListFaction[posUser].userID+" change faction form "+userListFaction[posUser].factionColor+" to "+data.factionColor);
-					
-					
-					
+
+
+
 					/*setTimeout(function(data){
 						if (data.factionColor==1) {
-							
+
 							bot.addToRole({
 								server: discordServeurId,
 								user: data.userID,
@@ -1229,27 +1229,27 @@ function getNewUser(data){
 							});
 						}
 						else if (data.factionColor==8) {
-							
+
 							bot.addToRole({
 								server: discordServeurId,
 								user: data.userID,
 								role: "133975813199495168"
 							});
-							
+
 						}
 						else if (data.factionColor==11) {
-							
+
 							bot.addToRole({
 								server: discordServeurId,
 								user: data.userID,
 								role: "133976248199151616"
 							});
-							
+
 						}
 						},2000,data);
 					setTimeout(function(fColor){
 						if (fColor==1) {
-							
+
 							bot.removeFromRole({
 								server: discordServeurId,
 								user: data.userID,
@@ -1257,28 +1257,28 @@ function getNewUser(data){
 							});
 						}
 						else if (fColor==8) {
-							
+
 							bot.removeFromRole({
 								server: discordServeurId,
 								user: data.userID,
 								role: "133975813199495168"
 							});
-							
+
 						}
 						else if (fColor==11) {
-							
+
 							bot.removeFromRole({
 								server: discordServeurId,
 								user: data.userID,
 								role: "133976248199151616"
 							});
-							
+
 						}
 					},1000,userListFaction[posUser].factionColor);
 					*/
-					
-					var supMessage = ""; // liste des @admin 
-					
+
+					var supMessage = ""; // liste des @admin
+
 					if (userListFaction != undefined) {
 						for(var i in userListFaction){
 							if ( userListFaction[i].isAdmin) {
@@ -1286,29 +1286,29 @@ function getNewUser(data){
 							}
 						}
 					}
-					
-					
+
+
 					var dateString = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 					// envoi un message dans #bot-log
 					var mToSend = "["+dateString+"] [Warning] [role] un utilisateur a essayé de changer de faction : <@"+data.userID+"> de la faction " +userListFaction[posUser].factionColor+" à la faction "+data.factionColor +"\n "+supMessage;
 					botSendMessageBis(channel.botLogChannelId,mToSend)
-					
+
 					/*bot.sendMessage({
 						to: channel.botLogChannelId,
 						message: mToSend
 					});*/
-					
+
 					returnArray ={number:200,desc:"disord user already register"};
 					log("send message","["+dateString+"] [Warning] [role] un utilisateur a essayé de changer de faction : <@"+data.userID+"> de la faction " +userListFaction[posUser].factionColor+" à la faction "+data.factionColor + "\n " + supMessage);
-					
-					
+
+
 				}
 				else if(data.factionColor!=userListFaction[posUser].factionColor){
 					// si la faction passe de undefined à un numéro correct
-					
+
 					//userListFaction[posUser].factionColor = data.factionColor;
 					log("userIdAlreadyIn",JSON.stringify(data));
-					
+
 					log("Register user change","user id "+userListFaction[posUser].userID+" change faction form "+userListFaction[posUser].factionColor+" to "+data.factionColor);
 					// timout pour des raison d'API qui ne vas ajouté qu'à un seul role si les demandes sont trop proches
 					//setTimeout(function(data){
@@ -1316,7 +1316,7 @@ function getNewUser(data){
 					//	 * ajoute l'utilisateur à la bonne faction
 					//	 */
 					//	/*if (data.factionColor==1) {
-					//		
+					//
 					//		bot.addToRole({
 					//			server: discordServeurId,
 					//			user: data.userID,
@@ -1325,25 +1325,25 @@ function getNewUser(data){
 					//		logDebug("role","add user to empire");
 					//	}
 					//	else if (data.factionColor==8) {
-					//		
+					//
 					//		bot.addToRole({
 					//			server: discordServeurId,
 					//			user: data.userID,
 					//			role: "133975813199495168"
 					//		});
 					//		logDebug("role","add user to Ligue");
-					//		
+					//
 					//	}
 					//	else if (data.factionColor==11) {
-					//		
+					//
 					//		bot.addToRole({
 					//			server: discordServeurId,
 					//			user: data.userID,
 					//			role: "133976248199151616"
 					//		});
-					//		
+					//
 					//		logDebug("role","add user to Neo");
-					//		
+					//
 					//	}
 					//	else{
 					//		logDebug("Warning","[role] add user to nothing (this may be an error)");
@@ -1360,7 +1360,7 @@ function getNewUser(data){
 					//		});
 					//	}
 					//},2000,data);
-					
+
 					pendingOperation.addOpperation(function(data){
 						var roleToAdd = role.getRoleIdByFactionColor(data.factionColor);
 						if (roleToAdd.id == undefined) {
@@ -1374,17 +1374,17 @@ function getNewUser(data){
 							});
 						}
 					},data)
-					
+
 					// timout pour des raison d'API qui ne vas ajouté qu'à un seul role si les demandes sont trop proches
 					//setTimeout(function(fColor){
-					//	
+					//
 					//	/*
 					//	 * enlève l'utilisateur de sa faction précédente (raison de sécurité)
 					//	 */
-					//	
-					//	
+					//
+					//
 					//	/*if (fColor==1) {
-					//		
+					//
 					//		bot.removeFromRole({
 					//			server: discordServeurId,
 					//			user: data.userID,
@@ -1393,7 +1393,7 @@ function getNewUser(data){
 					//		logDebug("role","remove user from Empire");
 					//	}
 					//	else if (fColor==8) {
-					//		
+					//
 					//		bot.removeFromRole({
 					//			server: discordServeurId,
 					//			user: data.userID,
@@ -1402,15 +1402,15 @@ function getNewUser(data){
 					//		logDebug("role","remove user from Ligue");
 					//	}
 					//	else if (fColor==11) {
-					//		
+					//
 					//		bot.removeFromRole({
 					//			server: discordServeurId,
 					//			user: data.userID,
 					//			role: "133976248199151616"
 					//		});
-					//		
+					//
 					//		logDebug("role","remove user from Neo");
-					//		
+					//
 					//	}
 					//	else{
 					//		logDebug("Warning","[role] remove user from nothing (this may be an error)");
@@ -1427,7 +1427,7 @@ function getNewUser(data){
 					//		});
 					//	}
 					//},1000,(userListFaction[posUser].factionColor));
-					
+
 					pendingOperation.addOpperation(function(data){
 						var roleToAdd = role.getRoleIdByFactionColor(fColor);
 						if (roleToAdd.id == undefined) {
@@ -1441,7 +1441,7 @@ function getNewUser(data){
 							});
 						}
 					},data)
-					
+
 					userListFaction[posUser].factionColor = data.factionColor; // upadte dans la list
 					returnArray ={number:200,desc:"user register correctly (update Status)"};
 				}
@@ -1469,11 +1469,11 @@ function getNewUser(data){
 		logDebug("user","wrong serveur");
 		returnArray ={number:200,desc:"wrong server"};
 	}
-	
+
 	fs.writeFile("./data/user.json",JSON.stringify(userListFaction),function (err) {}); // écrit dans le fichier de stoquage
-	
+
 	return returnArray;
-	
+
 }
 
 server.listen(8080);
@@ -1484,9 +1484,9 @@ server.listen(8080);
 	request.setEncoding('utf8');
         request.on('data', function (data) {
             body += data;
-		
+
 	console.log(data)
-	
+
             // Too much POST data, kill the connection!
             // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
             if (body.length > 1e6)
@@ -1504,7 +1504,7 @@ server.listen(8080);
         });
 	console.log(request.headers);
 	console.log(post)
-	
+
     }
 })*/
 
@@ -1518,33 +1518,33 @@ server.listen(8080);
 function log(head,message){ // log a message in a texte file (./log/log.txt)
 	var dateString = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 	//				      replace T with a space     delete the dot and everything after
-	
+
 	var stringHeadExtend = "";
 	if (head!= undefined &&  head!=""  && head!= null ) {
 		stringHeadExtend ="["+head+"] ";
 	}
-	
+
 	fs.appendFile('./log/log.txt', "["+dateString+"] "+stringHeadExtend+message+os.EOL, function (err) {
 		if (err){
 			throw err;
 		}
 	});
-	
+
 	logDebug(head,message);
 }
 
-function logDebug(head,message){ // log a debug message if the bot is in debug 
+function logDebug(head,message){ // log a debug message if the bot is in debug
 	if (debug) {
-		
-		
+
+
 		var dateString = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 		//				      replace T with a space     delete the dot and everything after
-		
+
 		var stringHeadExtend = "";
 		if (head!= undefined &&  head!=""  && head!= null ) {
 			stringHeadExtend ="["+head+"] ";
 		}
-		
+
 		fs.appendFile('./log/log-debug.txt', "["+dateString+"] "+stringHeadExtend+message+os.EOL, function (err) {
 			if (err){
 				throw err;
@@ -1556,18 +1556,18 @@ function logDebug(head,message){ // log a debug message if the bot is in debug
 function logHttp(message){ // log an message for http protocol
 	var dateString = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
 	//				      replace T with a space     delete the dot and everything after
-	
+
 	var stringHeadExtend = "";
-	
+
 	stringHeadExtend ="["+"http"+"] ";
-	
-	
+
+
 	fs.appendFile('./log/log-http.txt', "["+dateString+"] "+stringHeadExtend+message+os.EOL, function (err) {
 		if (err){
 			throw err;
 		}
 	});
-	
+
 	logDebug("http",message);
 }
 
@@ -1589,7 +1589,7 @@ function updateUserSlow(){ // update suer counter function
 function updateUserStatus() { // met a jour la liste des utilisateurs
 	log("User List Update","User List Update begin");
 	for (var i in bot["servers"][discordServeurId]["members"]){// note : i is an user discord ID
-		
+
 		// variable fpour l'etat de l'utilisateurs
 		var admin =false;
 		var modo = false;
@@ -1597,12 +1597,12 @@ function updateUserStatus() { // met a jour la liste des utilisateurs
 		var isVerifed = false;
 		var isInGouv = false
 		var verified = false
-		
+
 		var userI = bot["servers"][discordServeurId]["members"][i] // one member in discord
-		
+
 		for (var j in userI["roles"]){ // loop au travert les rôles
 			//console.log(userI["roles"][j])
-			if (userI["roles"][j] == role.adminRoleId.id) { 
+			if (userI["roles"][j] == role.adminRoleId.id) {
 				admin = true;
 				modo= true;
 				isVerifed = true;
@@ -1620,13 +1620,13 @@ function updateUserStatus() { // met a jour la liste des utilisateurs
 			}
 			// as there is more than one gouv rôle and the player may be in only one of them the isInGouv check is require
 			isInGouv = (isInGouv || role.isGouveRole(userI["roles"][j]));
-			
+
 		}
-		
-		
+
+
 		/*for(var k in userList.users){
 			if (i ==userList.users[k].userID ) {
-				
+
 			}
 		}*/
 		var isInList = false; // is already in list of user in the bot
@@ -1639,7 +1639,7 @@ function updateUserStatus() { // met a jour la liste des utilisateurs
 				}
 			}
 		}
-		
+
 		var modif = false; // if the user data is modified
 		if (isInList) {
 			var logMessage = " set user (id:"+userListFaction[posUser].userID+") :"; // a message for the log
@@ -1676,11 +1676,11 @@ function updateUserStatus() { // met a jour la liste des utilisateurs
 		else{ // if the user is not in the internal list
 			var newUser = new UserObject(i,null,null,factionColor,admin,modo,false,isInGouv,Date.now());
 			userListFaction.push(newUser);
-			
+
 			var logMessage = "adding new user "+JSON.stringify(newUser)
 			log("User List Update",logMessage);
 			console.log(logMessage)
-			
+
 		}
 	}
 	fs.writeFile("./data/user.json",JSON.stringify(userListFaction),function (err) {}); // set the list in the proper file
@@ -1709,12 +1709,12 @@ function VoteObject(idP,roleListP,userIDP,responceListP,q){
 	}
 	this.ownerId = userIDP; // who creat the vote
 	this.isClosed = false; // if the vote is closed
-	this.responceList =[]; 
+	this.responceList =[];
 	for (var i in responceListP){
 		this.reponceCollection.push(0); // when created nobody responce => all responce at 0
-		this.responceList.push(responceListP[i].trim()); // trim the responce 
+		this.responceList.push(responceListP[i].trim()); // trim the responce
 	}
-	
+
 	this.resultsText = function(){
 		//TODO
 		// => use an other function
@@ -1722,13 +1722,13 @@ function VoteObject(idP,roleListP,userIDP,responceListP,q){
 	}
 	this.question =q.trim();
 	this.userResp = new Array(); // liste des id qui ont répondu
-	
-	
+
+
 }
 
 var getVoteMessage = function(votePara,userID){ // send the info of the vote message
 	/* form of the returned message
-	 * 
+	 *
 	 * vote : this is a question?
 	 * 1) yes
 	 * 2) probably
@@ -1737,7 +1737,7 @@ var getVoteMessage = function(votePara,userID){ // send the info of the vote mes
 	 */
 	if (canAccesVote(votePara,userID)) { // TODO
 		var m = "vote : "+votePara.question;
-		
+
 		for (var i in votePara.responceList){ // list of responce
 			m+= "\n"+(parseInt(i)+1).toString()+") "+votePara.responceList[i];
 		}
@@ -1749,7 +1749,7 @@ var getVoteMessage = function(votePara,userID){ // send the info of the vote mes
 }
 //			vote obect    discord user id
 var canAccesVote = function(votePara,userID){ // determine if the player (userID) can accesse the vote (votePara)
-	
+
 	if (userID == votePara.ownerId) { // if the player own the vot he/she/it can always accest it
 		return true;
 	}
@@ -1758,8 +1758,8 @@ var canAccesVote = function(votePara,userID){ // determine if the player (userID
 		for (var i in bot["servers"][discordServeurId]["members"]){
 			if (i == userID) { // look for the correct member
 				if (bot["servers"][discordServeurId]["members"][i]["roles"].length == 0) { // if the user has not any role then he can voze only if the vote is for everyone
-					
-					
+
+
 					for (var k in votePara.roleList){
 						if (votePara.roleList[k] == role.evryoneRole.id) {
 							returnVal = true;
@@ -1768,27 +1768,27 @@ var canAccesVote = function(votePara,userID){ // determine if the player (userID
 				}
 				else{
 					for (var j in bot["servers"][discordServeurId]["members"][i]["roles"]){
-						
+
 						//console.log(bot["servers"][discordServeurId]["members"][i]["roles"][j]);
-						
+
 						for (var k in votePara.roleList){
 							//console.log("k:"+votePara.roleList[k]);
-							
+
 							// if the user is in the correct role or the vote role is everyone
-							if (bot["servers"][discordServeurId]["members"][i]["roles"][j] == votePara.roleList[k] || votePara.roleList[k] == role.evryoneRole.id) { 
+							if (bot["servers"][discordServeurId]["members"][i]["roles"][j] == votePara.roleList[k] || votePara.roleList[k] == role.evryoneRole.id) {
 								returnVal = true;
 							}
 						}
-						
+
 					}
 				}
 			}
 		}
 		return returnVal;
-		
+
 	}
-	
-	
+
+
 }
 
 
@@ -1808,7 +1808,7 @@ var errorReportVote = function(channelID,additionalError){ // send (in discord) 
 		//	message: "erreur : "+additionalError+"\n"+"entrer \"!vote help\" pour voir l'aide"
 		//});
 	}
-	
+
 }
 
 var textResultVote = function (votePara,userID) {
@@ -1819,23 +1819,23 @@ var textResultVote = function (votePara,userID) {
 			for (var i in votePara.reponceCollection){
 				sum += votePara.reponceCollection[i]
 			}
-			
-			
+
+
 			if (sum != 0) {
 				for (var i in votePara.responceList){
 					m+= "\n"+(parseInt(i)+1).toString()+") "+votePara.responceList[i] + " == " +  votePara.reponceCollection[i] +" / " + sum +" ("+Math.round(votePara.reponceCollection[i]/sum*100)+"%)"
 				}
-				
+
 			}
 			else{
 				for (var i in votePara.responceList){
 					m+= "\n"+(parseInt(i)+1).toString()+") "+votePara.responceList[i] + " == " +  votePara.reponceCollection[i] +" / " + sum +" (0%)"
-					
+
 				}
 			}
-			
+
 			return m
-			
+
 		}
 		else{
 			return "le vote est encore ouvert, vous ne pouvez donc pas voir les résultats"
@@ -1851,7 +1851,7 @@ var textResultVote = function (votePara,userID) {
 function voteFunctionManager(user, userID, channelID, message, rawEvent){
 	//messageArray = []
 	var messageArray =[]
-	
+
 	if (message.search(" " !=-1)) {
 		messageArray= message.split(" ");
 	}
@@ -1874,14 +1874,14 @@ function voteFunctionManager(user, userID, channelID, message, rawEvent){
 			messageUsefull.shift()
 			messageUsefull.shift()
 			messageUsefull = messageUsefull.join(" ");
-			
+
 			var messageUsefullArray=[];
-			
+
 			if (messageUsefull.search(";")!=-1) {
 				messageUsefullArray = messageUsefull.split(";");
 			}
-			
-			
+
+
 			if (messageUsefullArray.length >= 3) {
 				var roleVoteList = messageUsefullArray[1];
 				//if (roleVoteList.search("(")!=-1) {
@@ -1890,11 +1890,11 @@ function voteFunctionManager(user, userID, channelID, message, rawEvent){
 				//if (roleVoteList.search("(")!=-1 ) {
 					roleVoteList = roleVoteList.replace(")","");
 				//}
-				
+
 				while(roleVoteList.search(/[^0-9,]+/)!= -1 ){ // TODO enlever les caractères qui ne sont pas , [0-9,]
 					roleVoteList = roleVoteList.replace(/[^0-9,]+/,"");
 				}
-				
+
 				var roleVoteListArray = roleVoteList.split(",");
 				var isValideRoleList = true;
 				for (var i in roleVoteListArray){
@@ -1903,20 +1903,20 @@ function voteFunctionManager(user, userID, channelID, message, rawEvent){
 					}
 				}
 				//console.log(roleVoteListArray + " : "+roleVoteList);
-				
-				
+
+
 				var respVoteList = messageUsefullArray[2];
-				
+
 				respVoteList = respVoteList.replace("(","");
 				respVoteList = respVoteList.replace(")","");
 				var respVoteListArray = respVoteList.split(",");
-				
+
 				if (roleVoteListArray.length >=1 && respVoteListArray.length >=1 &&roleVoteListArray&& respVoteList!= " " && respVoteList!= "" && roleVoteList!= " " && roleVoteList!= "") {
 					var newid = voteArray.length;
 					voteArray.push(new VoteObject(newid,roleVoteListArray,userID,respVoteListArray,messageUsefullArray[0]));
-					
+
 					fs.writeFile("./data/vote.json",JSON.stringify(voteArray),function (err) {});
-					
+
 					voteMessage = getVoteMessage(voteArray[newid],userID);
 					botSendMessageBis(channelID,"vote créé avec succès\n l'id de ce vote est "+newid+"\nPour voter entrez\"!vote "+newid+" n\" où n est un nombre de 1 à " +voteArray[newid].responceList.length+" pour le choix correspondant : \n"+voteMessage);
 					//bot.sendMessage({
@@ -1931,13 +1931,13 @@ function voteFunctionManager(user, userID, channelID, message, rawEvent){
 			else{
 				errorReportVote(channelID,"pas assez d'agrument");
 			}
-			
-			
+
+
 		}
 		else if (messageArray[1] =="info") {
 			if (messageArray.length >=3) {
 				var idVoteInfo = parseInt(messageArray[2])
-				
+
 				if (!isNaN(idVoteInfo) && voteArray.length > idVoteInfo && idVoteInfo>=0) {
 					botSendMessageBis(channelID,getVoteMessage(voteArray[idVoteInfo],userID));
 					//bot.sendMessage({
@@ -1952,8 +1952,8 @@ function voteFunctionManager(user, userID, channelID, message, rawEvent){
 					//	message: "id invalide ou inexistant"
 					//});
 				}
-				
-				
+
+
 			}
 			else{
 				errorReportVote(channelID,"attendu un numéro qui représente le numéro du vote après info");
@@ -1962,26 +1962,26 @@ function voteFunctionManager(user, userID, channelID, message, rawEvent){
 		else if (!isNaN(parseInt(messageArray[1]))) {
 			var voteId = parseInt(messageArray[1]);
 			if (voteId < voteArray.length && canAccesVote(voteArray[voteId],userID)) {
-				
+
 				var boolAlreadyResp = false;
 				for(var i in voteArray[voteId].userResp){
 					if (voteArray[voteId].userResp[i] == userID) {
 						boolAlreadyResp = true;
 					}
 				}
-				
+
 				if (!boolAlreadyResp) {
 					if (voteArray[voteId].isClosed == false) {
 						//code
-						
-						
+
+
 						if (messageArray.length>=3 && !isNaN(parseInt(messageArray[2]))  ) {
 							//console.log(messageArray);
-							
-							
-							
+
+
+
 							var resId = parseInt(messageArray[2]);
-							
+
 							if (resId-1 < voteArray[voteId].responceList.length && resId-1>=0){//code
 								++voteArray[voteId].reponceCollection[resId-1];
 								//console.log(voteArray[voteId])
@@ -1996,7 +1996,7 @@ function voteFunctionManager(user, userID, channelID, message, rawEvent){
 							else{
 								errorReportVote(channelID,"numéro de réponse non valide");
 							}
-							
+
 						}
 						else{
 							errorReportVote(channelID,"attendu le numéro de la réponse");
@@ -2026,12 +2026,12 @@ function voteFunctionManager(user, userID, channelID, message, rawEvent){
 				}
 				else{
 					errorReportVote(channelID,"numéro du vote non valide");
-					
+
 				}
 			}
 			else{
 				errorReportVote(channelID,"attendu un numéro qui représente le numéro du vote après result");
-				
+
 			}
 		}
 		else if (messageArray[1] == "close") {
@@ -2047,12 +2047,12 @@ function voteFunctionManager(user, userID, channelID, message, rawEvent){
 				}
 				else{
 					errorReportVote(channelID,"numéro du vote non valide");
-					
+
 				}
 			}
 			else{
 				errorReportVote(channelID,"attendu un numéro qui représente le numéro du vote après close");
-				
+
 			}
 		}
 		else if (messageArray[1] == "open") {
@@ -2068,12 +2068,12 @@ function voteFunctionManager(user, userID, channelID, message, rawEvent){
 				}
 				else{
 					errorReportVote(channelID,"numéro du vote non valide");
-					
+
 				}
 			}
 			else{
 				errorReportVote(channelID,"attendu un numéro qui représente le numéro du vote après close");
-				
+
 			}
 		}
 		else if (messageArray[1] == "list") {
@@ -2091,16 +2091,16 @@ function voteFunctionManager(user, userID, channelID, message, rawEvent){
 			//	to: channelID,
 			//	message: m
 			//});
-			
+
 		}
 		else{ // si aucun élément n'est juste
 			//console.log(!isNaN(parseInt(messageArray[1])) + " " + parseInt(messageArray[1]) + " "+messageArray[1])
 			errorReportVote(channelID);
 		}
-		
+
 		fs.writeFile("./data/vote.json",JSON.stringify(voteArray),function (err) {})
 	}
-	
+
 }
 
 
@@ -2113,7 +2113,7 @@ function banUserCommandManager(user, userID, channelID, message, rawEvent){
 	 * forme du message attendu !ban <@id> time resaon
 	 * time en heurs
 	 */
-	
+
 	var messageArray = message.split(" ");
 	var messageReason = ""
 	if (messageArray.length > 3) {
@@ -2124,12 +2124,12 @@ function banUserCommandManager(user, userID, channelID, message, rawEvent){
 	// the second argument est optionelle
 	if (messageArray.length > 2) {
 		var userMessage = messageArray[1];
-		
+
 		userMessage = userMessage.replace("<@","");
 		userMessage = userMessage.replace(">","");
-		
+
 		var time =  parseInt(messageArray[2])
-		
+
 		if (isNaN(time)|| time < 0) {
 			botSendMessageBis(channelID,"time incorect expecting positive value");
 			//bot.sendMessage({
@@ -2141,9 +2141,9 @@ function banUserCommandManager(user, userID, channelID, message, rawEvent){
 			//                                 s->ms h->s
 			var m2 = banUser(userMessage,time*1000*3600,messageReason);
 			if (m2[0]) {
-				
+
 				botSendMessageBis(channelID,m2[1]);
-				
+
 				//bot.sendMessage({
 				//	to: channelID,
 				//	message: m2[1]
@@ -2153,7 +2153,7 @@ function banUserCommandManager(user, userID, channelID, message, rawEvent){
 				//		bot.sendMessage({
 				//			to: channel.botLogChannelId,
 				//			message: "<@"+userID+"> : ban "+messageArray[1]
-				//		});		
+				//		});
 				//	   },1000);
 				botSendMessageBis(channel.botLogChannelId,"<@"+userID+"> : ban "+messageArray[1]);
 			}
@@ -2164,7 +2164,7 @@ function banUserCommandManager(user, userID, channelID, message, rawEvent){
 				//	message: "error : "+m2[1]
 				//});
 			}
-			
+
 		}
 	}
 	else{
@@ -2174,8 +2174,8 @@ function banUserCommandManager(user, userID, channelID, message, rawEvent){
 		//	message: "too few argument expecting !ban @userName time reason\n where teh reason in optional"
 		//});
 	}
-	
-	
+
+
 }
 
 
@@ -2186,20 +2186,20 @@ function banUser(userID,time,reason){
 	 */
 	try{
 		var userInDiscordServeur=false; // si l'utilisateur est dans le serv discord
-		
-		
+
+
 		for (var i in bot["servers"][discordServeurId]["members"]){ // regarde au travert de la list des membre du serveur
 			if (i == userID) {
-				
+
 				userInDiscordServeur = true;
 			}
 		}
-		
-		
-		
+
+
+
 		if (userInDiscordServeur) {
 			updateUserStatus();
-			
+
 			var posUser = -1;
 			for (var i in userListFaction){ // check au travet de la list
 				if (userID == userListFaction[i].userID) {
@@ -2211,7 +2211,7 @@ function banUser(userID,time,reason){
 				return [false,"utilisateur dans la list introuvable après un update de la liste mais il est sur le serveur discord."]
 			}
 			else{
-				
+
 				if (! isAdminFunc(userID) && !isBanFunc(userID) && !(userID == bot["id"]) ) {
 					userListFaction[posUser].roleBeforeBan = [];
 					var timeoutInterval =2000;// 2000 to let me the tome to do other thing
@@ -2231,14 +2231,14 @@ function banUser(userID,time,reason){
 							//	   },
 							//	   timeoutInterval,rid,userID
 							//);
-							
+
 							botRemoveFromRoleBis(discordServeurId,userID,rid);
-							
+
 							timeoutInterval += 1000;
 						}
-						
+
 					}
-					
+
 					//setTimeout(
 					//	function(){
 					//	     bot.addToRole({
@@ -2251,18 +2251,18 @@ function banUser(userID,time,reason){
 					timeoutInterval += 1000
 					userListFaction[posUser].banUntil = Date.now() + time;
 					userListFaction[posUser].banReason = reason;
-					
+
 					pendingOperation.addOpperation(function(posUser){
-						
+
 						userListFaction[posUser].isBan = true;
-						
+
 						writeUserList();
 						banManager();
 					},posUser);
-					
-					
+
+
 					return [true,"user ban"];
-					
+
 				}
 				else if(isAdminFunc(userID) || (userID == bot["id"])){
 					return [false,"cannot ban an admin or the bot"];
@@ -2275,7 +2275,7 @@ function banUser(userID,time,reason){
 		else{
 			return [false,"id ("+userID+") d'utilisateur invalide"];
 		}
-		
+
 	}
 	catch(e){
 		console.log("crash in banUser function");
@@ -2295,7 +2295,7 @@ function unbanCommandManager(user, userID, channelID, message, rawEvent){
 	var messageReason = "";
 	if (messageArray.length > 1) {
 		var userMessage = messageArray[1];
-		
+
 		userMessage = userMessage.replace("<@","");
 		userMessage = userMessage.replace(">","");
 		if (userMessage == userID) {
@@ -2306,8 +2306,8 @@ function unbanCommandManager(user, userID, channelID, message, rawEvent){
 			//});
 		}
 		else{
-			
-			
+
+
 			var m2 = unban(userMessage);
 			if (m2[0]) {
 				botSendMessageBis(channelID,"user unbanned");
@@ -2321,7 +2321,7 @@ function unbanCommandManager(user, userID, channelID, message, rawEvent){
 				//	     bot.sendMessage({
 				//		     to: channel.botLogChannelId,
 				//		     message: "<@"+userID+"> : unban "+messageArray[1]
-				//	     });		
+				//	     });
 				//	},1000);
 			}
 			else{
@@ -2349,7 +2349,7 @@ function unban(userID) {
 	var posUser = -1;
 	for (var i in userListFaction){ // check au travet de la list
 		if (userID == userListFaction[i].userID) {
-			
+
 			posUser = i;
 		}
 	}
@@ -2368,7 +2368,7 @@ function unban(userID) {
 		//	     });
 		//	},timeoutInterval,userID);
 		botRemoveFromRoleBis(discordServeurId,userID,role.banRole.id);
-		
+
 		timeoutInterval+=1000;
 		for (var i in userListFaction[posUser].roleBeforeBan){
 			//setTimeout(
@@ -2385,19 +2385,19 @@ function unban(userID) {
 			timeoutInterval+=1000;
 		}
 		pendingOperation.addOpperation(function(posUser){
-			
+
 			userListFaction[posUser].isBan = false;
 			updateUserStatus();
 			banManager();
 		},posUser);
-		
+
 		//setTimeout(function(posUser){
-		//	
+		//
 		//	userListFaction[posUser].isBan = false;
 		//	updateUserStatus();
 		//	banManager();
 		//	},timeoutInterval,posUser);
-		
+
 		return [true,"user unbanned",timeoutInterval];
 	}
 	else{
@@ -2411,24 +2411,24 @@ function banManager(){
 	 *
 	 *
 	 */
-	
+
 	/*var timeoutBManger = 0
-	
+
 	for (var i in userListFaction) {
 		if (userListFaction[i].isBan && Date.now()-userListFaction[i].banUntil<0) {
 			setTimeout()
 		}
 	}*/
-	
-	
+
+
 	for (var i in userListFaction) {
 		if (userListFaction[i].isBan && -Date.now()+userListFaction[i].banUntil<0) {
 			botSendMessageBis(channel.botLogChannelId,"<@"+userListFaction[i].userID+"> auto unbanned")
 			unban(userListFaction[i].userID);
 		}
 	}
-	
-	
+
+
 	pendingOperation.addOpperation(function(){
 		bot.getMessages({
 				channel: channel.banChanId,
@@ -2450,7 +2450,7 @@ function banManager(){
 						if (regExpBan.test(messageArr[i].content) && !boolBan) {
 							boolBan = true;
 							posBan =i;
-							
+
 							pendingOperation.addOpperation(function(id){
 								bot.editMessage({
 									channel: channel.banChanId,
@@ -2458,7 +2458,7 @@ function banManager(){
 									message:"liste des utilisateurs bannis : \n"+getBanMessage()
 								});
 							},messageArr[i].id)
-							
+
 							//setTimeout(function(id){
 							//	bot.editMessage({
 							//		channel: channel.banChanId,
@@ -2550,7 +2550,7 @@ function getAvMessage(){
 	for (var i in userListFaction) {
 		if (userListFaction[i].avertissement >0) {
 			m+= "<@"+userListFaction[i].userID+"> : "+userListFaction[i].avertissement+ " avertissements";
-			
+
 		}
 	}
 	return m;
@@ -2559,7 +2559,7 @@ function getAvMessage(){
 
 var isAdminFunc = function(userID){
 	var retrunval = false;
-	
+
 	for(var i in userList.users){
 		if (userID ==userList.users[i].userID ) {
 			return userList.users[i].isAdmin;
@@ -2572,13 +2572,13 @@ var isAdminFunc = function(userID){
 			}
 		}
 	}
-	
-	
+
+
 	return retrunval;
 }
 var isModoFunc = function(userID){
 	var retrunval = false;
-	
+
 	for(var i in userList.users){
 		if (userID ==userList.users[i].userID ) {
 			return userList.users[i].isModo;
@@ -2591,13 +2591,13 @@ var isModoFunc = function(userID){
 			}
 		}
 	}
-	
+
 	return retrunval;
 }
 
 var isBanFunc = function(userID){
 	retrunval = false;
-	
+
 	/*for(var i in userList.users){
 		if (userID ==userList.users[i].userID ) {
 			return userList.users[i].isBan;
@@ -2610,7 +2610,7 @@ var isBanFunc = function(userID){
 			}
 		}
 	}
-	
+
 	return retrunval;
 }
 
@@ -2684,8 +2684,8 @@ var commandList = [new commandC(
 					for (var i in commandListAll){
 						if (commandListAll[i].showHelp(user, userID, channelID, message, rawEvent)) {
 							messageTemp += commandListAll[i].inputDescription + " : "+commandListAll[i].descr+"\n"
-							
-							
+
+
 						}
 					}
 					botSendMessageBis(channelID,messageTemp);
@@ -2693,7 +2693,7 @@ var commandList = [new commandC(
 					//	to: channelID,
 					//	message: messageTemp
 					//});
-				    
+
 				},
 				"!help", "affiche la liste des commandes",truefunc
 			),
@@ -2721,7 +2721,7 @@ var commandList = [new commandC(
 						var channelID = res.channel_id
 						//console.log(res)
 						if (bot.serverFromChannel(channelID) != undefined) {
-						
+
 							setTimeout(function(messageID,channelID){
 								//console.log(channelID+":"+messageID)
 								bot.editMessage({
@@ -2733,7 +2733,7 @@ var commandList = [new commandC(
 						}
 					});
 					//console.log(rawEvent.d.id+" : "+ bot.serverFromChannel(channelID))
-					
+
 				},
 				"!info", "retourne les infos sur le message",truefunc
 			),
@@ -2771,7 +2771,7 @@ var commandList = [new commandC(
 					//    to: channelID,
 					//    message: "Bonjour, je suis Chicken Bot.\n\n j'ai été créé le 3 janvier 2016 par ChickenStorm pour le serveur Asylamba 2.0 sur Discord.\n\n"+
 					//    "Mon dépôt git se trouve sous https://github.com/ChickenStorm/ChickenBot\n\n entrez \"!help\" pour voir la liste de mes commandes"
-					//    
+					//
 					//});
 				},
 				"!about", "à propos de ce bot",truefunc
@@ -2786,7 +2786,7 @@ var commandList = [new commandC(
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-					
+
 					var mToSend = "Votre identifiant est : "+userID;
 					if (bot.serverFromChannel(channelID) != undefined) {
 						mToSend+= "\nce message s'auto-détruira dans 5 secondes (Pour voir ce message plus longtemps envoyez un message privé à <@"+bot.id+">)"
@@ -2799,7 +2799,7 @@ var commandList = [new commandC(
 						var channelID = res.channel_id
 						//console.log(res)
 						if (bot.serverFromChannel(channelID) != undefined) {
-						
+
 							setTimeout(function(messageID,channelID){
 								//console.log(channelID+":"+messageID)
 								bot.editMessage({
@@ -2810,11 +2810,11 @@ var commandList = [new commandC(
 							},5000,res.id,channelID)
 						}
 					});
-					
+
 					/*bot.sendMessage({
 					    to: channelID,
 					    message: "Votre identifiant est : "+userID
-					    
+
 					});*/
 				},
 				"!me", "retourne l'user id",truefunc
@@ -2850,8 +2850,8 @@ var commandList = [new commandC(
 							}
 						}
 					}
-					
-					
+
+
 					/*for (var i in bot["servers"]["132106417703354378"]["members"]){
 						if (i == data.userID) {
 							userInDiscordServeur = true;
@@ -2861,7 +2861,7 @@ var commandList = [new commandC(
 					//bot.sendMessage({
 					//    to: channelID,
 					//    message: "<@"+userID+"> :"+message.replace(atAdminRegExp,"("+supMessage+")")
-					//    
+					//
 					//});
 				},
 				"@admin", "appelle les admins quelque soit la position @admin dans le message",truefunc
@@ -2897,8 +2897,8 @@ var commandList = [new commandC(
 							}
 						}
 					}
-					
-					
+
+
 					/*for (var i in bot["servers"]["132106417703354378"]["members"]){
 						if (i == data.userID) {
 							userInDiscordServeur = true;
@@ -2908,7 +2908,7 @@ var commandList = [new commandC(
 					//bot.sendMessage({
 					//    to: channelID,
 					//    message: "<@"+userID+"> :"+message.replace(atAdminRegExp,"("+supMessage+")")
-					//    
+					//
 					//});
 				},
 				"@modo", "appelle les modérateurs quelque soit la position du @modo dans le message",truefunc
@@ -2927,7 +2927,7 @@ var commandList = [new commandC(
 					//bot.sendMessage({
 					//    to: channelID,
 					//    message: texts.facts[Math.floor(Math.random()*texts.facts.length)]
-					//    
+					//
 					//});
 				},
 				"!fact", "retourne un fait amusant",truefunc
@@ -2946,7 +2946,7 @@ var commandList = [new commandC(
 					//bot.sendMessage({
 					//    to: channelID,
 					//    message: texts.jokes[Math.floor(Math.random()*texts.jokes.length)]
-					//    
+					//
 					//});
 				},
 				"!joke", "retourne une blague",truefunc
@@ -2965,7 +2965,7 @@ var commandList = [new commandC(
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: texts.quotes[Math.floor(Math.random()*texts.quotes.length)]
-					//    
+					//
 					//});
 				},
 				"!quote", "retourne une citation",truefunc
@@ -2981,12 +2981,12 @@ var commandList = [new commandC(
 				},
 				function(user, userID, channelID, message, rawEvent){
 						var randomNumberSpetial = Math.random();
-						
+
 						if (randomNumberSpetial >= 0.995 || (user == "ChickenStorm" && randomNumberSpetial >= 7/8) ) {
 								botSendMessageBis(channelID,"?) Le dieux poulet entend ta prière, il te conseil d'écoute les poulets.");
 						}
 						else{
-								
+
 								var randomNumber;
 								if (userID == "132931838841716736") { // SufX (L'Ambassadeur)
 										randomNumber = 3; // not so random
@@ -2994,15 +2994,15 @@ var commandList = [new commandC(
 								else{
 										randomNumber = Math.floor(Math.random()*texts.pray.length);
 								}
-								
+
 								var randomNumberDisplay = randomNumber+1;
 								botSendMessageBis(channelID,randomNumberDisplay.toString()+") "+texts.pray[randomNumber]);
-								
+
 						}
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: texts.quotes[Math.floor(Math.random()*texts.quotes.length)]
-					//    
+					//
 					//});
 				},
 				"!Prière", "Entendez ma prière",truefunc
@@ -3017,17 +3017,17 @@ var commandList = [new commandC(
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-						
+
 						botSendMessageBis(channelID,"les dieux : http://asylamba.com/wiki/page-162");
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: texts.quotes[Math.floor(Math.random()*texts.quotes.length)]
-					//    
+					//
 					//});
 				},
 				"!Dieux", "lien wiki des dieux",truefunc
 			),
-			
+
 		   new commandC(
 				function(user, userID, channelID, message, rawEvent){
 					var voteRegExp = new RegExp("^!vote *")
@@ -3061,7 +3061,7 @@ var commandList = [new commandC(
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: messageToSend
-					//    
+					//
 					//});
 				},
 				"!roleList", "affiche la liste des roles",truefunc
@@ -3076,17 +3076,17 @@ var commandList = [new commandC(
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-					
+
 					/*bot.sendMessage({
 					    to: channelID,
 					    message: ":heart: :heart: :heart: <@93784478299725824> :heart: :heart: :heart:"
-					    
+
 					});*/
 					botSendMessageBis(channelID,":heart: :heart: :heart: ChickenStorm :heart: :heart: :heart:");
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: ":heart: :heart: :heart: ChickenStorm :heart: :heart: :heart:"
-					//    
+					//
 					//});
 				},
 				"!chickenLove", "montez votre affection pour ChickenStorm",truefunc
@@ -3101,13 +3101,13 @@ var commandList = [new commandC(
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-					
+
 					botSendMessageBis(channelID," Trois Biscuits pour les néo-humaniste sous le ciel,\n Sept pour les seigneurs impériaux dans leurs demeures de pierre,\n Neuf pour la Ligue Seldarine,\n Un Biscuit pour Luneverte sur son sombre trône,\n Dans la Galaxie de l\'Oeil où s\'étendent les ombres\n Un Biscuit pour les gouverner tous\n Un Biscuit pour les trouver\n Un Biscuit pour les amener tous,\n Et dans la gourmandise les lier\n Dans la Galaxie de l\'Oeil où s\'étendent les ombres.");
-					
+
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: " Trois Biscuits pour les néo-humaniste sous le ciel,\n Sept pour les seigneurs impériaux dans leurs demeures de pierre,\n Neuf pour la Ligue Seldarine,\n Un Biscuit pour Luneverte sur son sombre trône,\n Dans la Galaxie de l\'Oeil où s\'étendent les ombres\n Un Biscuit pour les gouverner tous\n Un Biscuit pour les trouver\n Un Biscuit pour les amener tous,\n Et dans la gourmandise les lier\n Dans la Galaxie de l\'Oeil où s\'étendent les ombres."
-					//    
+					//
 					//});
 				},
 				"!biscuit", "que sont vraiment les biscuite de lunverte",truefunc
@@ -3126,7 +3126,7 @@ var commandList = [new commandC(
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: "Je suis de retour pour jouer sans recours\nAfin de préserver mon bar de la dévastation\net ralier à ma cause toutes les factions\nAfin de distribuer l'amour et des fessées\nAfin d'étendre mes pratiques dans toutes les contrées\n\nDame Falmala\nAussi belle que sévère\nVenez dans ma cave\nVous verrez ce qu'on peu y faire\n\n... Oui ... C'est clair !!!"
-					//    
+					//
 					//});
 				},
 				"!Falmala", "Dame Falmala est de retour !",truefunc
@@ -3145,7 +3145,7 @@ var commandList = [new commandC(
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: "Je suis de retour pour jouer sans recours\nAfin de préserver mon bar de la dévastation\net ralier à ma cause toutes les factions\nAfin de distribuer l'amour et des fessées\nAfin d'étendre mes pratiques dans toutes les contrées\n\nDame Falmala\nAussi belle que sévère\nVenez dans ma cave\nVous verrez ce qu'on peu y faire\n\n... Oui ... C'est clair !!!"
-					//    
+					//
 					//});
 				},
 				"!Zahius", "On m’appelle Crésus",truefunc
@@ -3166,7 +3166,7 @@ var commandList = [new commandC(
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: "Je suis de retour pour jouer sans recours\nAfin de préserver mon bar de la dévastation\net ralier à ma cause toutes les factions\nAfin de distribuer l'amour et des fessées\nAfin d'étendre mes pratiques dans toutes les contrées\n\nDame Falmala\nAussi belle que sévère\nVenez dans ma cave\nVous verrez ce qu'on peu y faire\n\n... Oui ... C'est clair !!!"
-					//    
+					//
 					//});
 				},
 				"!Président", "Moi Président de la République, [...]",truefunc
@@ -3185,7 +3185,7 @@ var commandList = [new commandC(
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: "simulateur de combat https://dl.dropboxusercontent.com/u/110049848/Projecet_script_public/Asylamba_project_online_launcher.html "
-					//    
+					//
 					//});
 				},
 				"!simulateur", "donne le lien du simulateur de combat",truefunc
@@ -3223,7 +3223,7 @@ var commandList = [new commandC(
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-					
+
 					var mArray = message.split(" ");
 					botSendMessageBis(channelID,"le dé "+parseInt(mArray[1])+" affiche "+ Math.floor(Math.random()*parseInt(mArray[1])+1));
 					//bot.sendMessage({
@@ -3244,16 +3244,16 @@ var commandList = [new commandC(
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-					
+
 					var arrayMess = message.split(" ");
-					
+
 					arrayMess.shift() // enlève le premier élément (i.e. !newquote)
 					var messageToSend = "[quote] <@"+userID+"> : "+arrayMess.join(" ") + "\n from chanel <#"+channelID+">";
-					
+
 					botSendMessageBis(channelID,"quote proposée");
 					botSendMessageBis(channel.botLogChannelId,messageToSend);
 					botSendMessageBis(channel.chickenMPChan,messageToSend);
-					
+
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: "quote proposée"
@@ -3280,11 +3280,11 @@ var commandList = [new commandC(
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-					
+
 					var arrayMess = message.split(" ");
 					arrayMess.shift() // enlève le premier élément (i.e. !report)
 					var messageToSend = "[report]  <@"+userID+"> : "+arrayMess.join(" ") + "\n from chanel <#"+channelID+">";
-					
+
 					arrayMess.shift() // enlève le premier élément
 					botSendMessageBis(channelID,"report fait");
 					botSendMessageBis(channel.botLogChannelId,messageToSend);
@@ -3316,11 +3316,11 @@ var commandList = [new commandC(
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-					
+
 					var arrayMess = message.split(" ");
 					arrayMess.shift() // enlève le premier élément (i.e. !idea)
 					var messageToSend = "[idea]  <@"+userID+"> : "+arrayMess.join(" ") + "\n from chanel <#"+channelID+">";
-					
+
 					arrayMess.shift() // enlève le premier élément
 					botSendMessageBis(channelID,"idée proposée");
 					botSendMessageBis(channel.botLogChannelId,messageToSend);
@@ -3337,7 +3337,7 @@ var commandList = [new commandC(
 					//	to: channel.chickenMPChan,
 					//	message: messageToSend
 					//});
-					
+
 				},
 				"!idea *", "proposer une idée pour le bot / demander votre propre commande / une suggestion en générale",truefunc
 			),
@@ -3352,7 +3352,7 @@ var commandList = [new commandC(
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-					
+
 					for (var i in userListFaction){
 						if (userListFaction[i].userID == userID) {
 							if (userListFaction[i].notifList==undefined) {
@@ -3361,10 +3361,10 @@ var commandList = [new commandC(
 							userListFaction[i].notifList.bg = true;
 						}
 					}
-					
+
 					botAddToRoleBis(discordServeurId,userID,role.bgRole.id);
 					botSendMessageBis(channelID,"vous avez été ajouté à la liste @BG");
-					
+
 					//bot.sendMessage({
 					//	to: channelID,
 					//	message: "idée proposée"
@@ -3377,7 +3377,7 @@ var commandList = [new commandC(
 					//	to: channel.chickenMPChan,
 					//	message: messageToSend
 					//});
-					
+
 				},
 				"!getInBg", "entrer dans la liste des notification pour le @BG",truefunc
 			),
@@ -3392,7 +3392,7 @@ var commandList = [new commandC(
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-					
+
 					for (var i in userListFaction){
 						if (userListFaction[i].userID == userID) {
 							if (userListFaction[i].notifList==undefined) {
@@ -3415,7 +3415,7 @@ var commandList = [new commandC(
 					//	to: channel.chickenMPChan,
 					//	message: messageToSend
 					//});
-					
+
 				},
 				"!outOfBg", "sortire dans la liste des notification pour le @BG",truefunc
 			),
@@ -3450,8 +3450,8 @@ var commandList = [new commandC(
 							}
 						}
 					}
-					
-					
+
+
 					/*for (var i in bot["servers"]["132106417703354378"]["members"]){
 						if (i == data.userID) {
 							userInDiscordServeur = true;
@@ -3461,7 +3461,7 @@ var commandList = [new commandC(
 					//bot.sendMessage({
 					//    to: channelID,
 					//    message: "<@"+userID+"> :"+message.replace(atAdminRegExp,"("+supMessage+")")
-					//    
+					//
 					//});
 				},
 				"@BG", "Notifie les personnes du background",truefunc
@@ -3477,7 +3477,7 @@ var commandList = [new commandC(
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-					
+
 					for(var i in userListFaction){
 						if (userID == userListFaction[i].userID) {
 							postemp = i;
@@ -3491,8 +3491,8 @@ var commandList = [new commandC(
 						xkcdpass: false //Optional
 					 },function(error, response){
 						if (error == undefined) {
-							
-							// TODO  more reliable methode 
+
+							// TODO  more reliable methode
 							botSendMessageBis(userListFaction[postemp].userID,"Voici votre lien d'invitation pour le server de votre faction Asylamba "+invitationPrefix+"/"+response.code)
 						}
 					 }
@@ -3500,8 +3500,8 @@ var commandList = [new commandC(
 				},
 				"!getInvite", "reçoit une invitation de votre server de faction",truefunc
 			),
-		   
-		   
+
+
 
 
 ]
@@ -3516,7 +3516,7 @@ var commandManage = [
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-				    
+
 					enable = true;
 					bot.sendMessage({
 						to: channelID,
@@ -3540,7 +3540,7 @@ var commandManage = [
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-				    
+
 					enable = false;
 					bot.sendMessage({
 						to: channelID,
@@ -3551,7 +3551,7 @@ var commandManage = [
 						game: "Status : disable"
 					});*/
 					switchStatusMessage();
-				    
+
 				},
 				"!disable", "désactive le bot (modo)",function(user, userID, channelID, message, rawEvent){return isModoFunc(userID) || isAdminFunc(userID)}
 			),
@@ -3565,7 +3565,7 @@ var commandManage = [
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-				    
+
 					enable = true;
 					bot.sendMessage({
 						to: channelID,
@@ -3580,9 +3580,9 @@ var commandManage = [
 							setTimeout(function(){process.exit(0)}, 1000); // ça généère une erreur :(
 						});
 					});
-					
-					
-					
+
+
+
 				},
 				"!exit", "arrête le bot (admin)",function(user, userID, channelID, message, rawEvent){return isAdminFunc(userID)}
 			),
@@ -3596,9 +3596,9 @@ var commandManage = [
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-				    
+
 					forceEnable = !forceEnable;
-					
+
 					if (forceEnable) {
 						bot.sendMessage({
 							to: channelID,
@@ -3613,7 +3613,7 @@ var commandManage = [
 						});
 					}
 					switchStatusMessage();
-				    
+
 				},
 				"!forceEnableToggle", "change si le bot est forcé à être activé (admin)",function(user, userID, channelID, message, rawEvent){return isAdminFunc(userID)}
 			),
@@ -3627,9 +3627,9 @@ var commandManage = [
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-				    
+
 					forceDisable = !forceDisable;
-				    
+
 					if (forceDisable) {
 						bot.sendMessage({
 							to: channelID,
@@ -3644,9 +3644,9 @@ var commandManage = [
 						});
 					}
 					switchStatusMessage();
-					
-					
-					
+
+
+
 				},
 				"!forceDisableToggle", "change si le bot est forcé à être désactivé (admin)",function(user, userID, channelID, message, rawEvent){return isAdminFunc(userID)}
 			),
@@ -3660,8 +3660,8 @@ var commandManage = [
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-				    
-				    
+
+
 					bot.sendMessage({
 						to: channelID,
 						message: "updating list"
@@ -3680,16 +3680,16 @@ var commandManage = [
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-				    
-				    
+
+
 					sendData = !sendData;
-				    
+
 					if (sendData) {
 						bot.sendMessage({
 							to: channelID,
 							message: "sendData on"
 						});
-						
+
 					}
 					else{
 						bot.sendMessage({
@@ -3711,9 +3711,9 @@ var commandManage = [
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-				    
+
 				    banUserCommandManager(user, userID, channelID, message, rawEvent);
-					
+
 				},
 				"!ban @name time reason", " (modo)",function(user, userID, channelID, message, rawEvent){return isModoFunc(userID)}
 			),
@@ -3728,13 +3728,27 @@ var commandManage = [
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-				    
+
 					unbanCommandManager(user, userID, channelID, message, rawEvent);
-					
+
 				},
 				"!unban @name", " (modo)",function(user, userID, channelID, message, rawEvent){return isModoFunc(userID)}
-			)
-		    
+			),
+      new commandC(
+       function(user, userID, channelID, message, rawEvent){
+         if(message=="!bug"){
+           return true
+         }
+         else{
+           return false
+         }
+       },
+       function(user, userID, channelID, message, rawEvent){
+         botSendMessageBis(userID,"Pour faire un rapport de bug, allez sur le forum http://asylamba.com/forum/categorie-bug \n\nVous êtes priés d'utiliser ce schéma pour plus de clarté:\nDescription du problème:\nVotre configuration: par exemple: mac/chrome Version 58.0.3029.110 (64-bit)\nnom complet in Game:\nUrgence : par exemple: basse (non bloquant), moyenne (bloquant, mais peux encore jouer), haute (ne peux plus jouer)\nLien sur capture d'écran: vous pouvez utiliser https://ibb.co/ pour héberger vos images");
+       },
+       "!bug", "Envoi d'un rapport de bug",truefunc
+      )
+
 ]
 
 commandMaintenance = [
@@ -3748,29 +3762,29 @@ commandMaintenance = [
 					}
 				},
 				function(user, userID, channelID, message, rawEvent){
-				    
+
 					var arrayUserTemp = [];
-					
+
 					for(var pos=0; pos <userListFaction.length;++pos){
 						if (! (parseInt(userListFaction[pos].userID) < 200) ) {
 							arrayUserTemp.push(userListFaction[pos]);
 						}
 					}
-					
+
 					userListFaction = arrayUserTemp;
-					
-				    
-					
+
+
+
 					bot.sendMessage({
 						to: channelID,
 						message: "done"
 					});
-					
+
 					writeUserList();
 					setTimeout(function(){process.exit(0)}, 1000);
-					
-					
-					
+
+
+
 				},
 				"!maintenance", " (admin) va clear les userID en dessous de 200 (bug) puis stop le bot",function(user, userID, channelID, message, rawEvent){return isAdminFunc(userID)}
 			)
