@@ -2983,7 +2983,7 @@ var commandList = [new commandC(
 						var randomNumberSpetial = Math.random();
 
 						if (randomNumberSpetial >= 0.995 || (user == "ChickenStorm" && randomNumberSpetial >= 7/8) ) {
-								botSendMessageBis(channelID,"?) Le dieux poulet entend ta prière, il te conseil d'écoute les poulets.");
+								botSendMessageBis(channelID,"?) Le dieux poulet entend ta prière, il te conseille d'écoute les poulets.");
 						}
 						else{
 
