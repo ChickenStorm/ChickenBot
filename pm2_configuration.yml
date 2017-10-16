@@ -1,0 +1,5 @@
+apps:
+  - script   : '/srv/app/bot.js'
+    name     : 'app'
+    exec_mode: 'cluster'
+    instances: 1
