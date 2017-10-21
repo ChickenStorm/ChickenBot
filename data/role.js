@@ -64,7 +64,7 @@ exports.neo = {id:"232363434853924864",name:"neo"}; //9
 exports.seldare = {id:"232363197334683659",name:"seldare"}; //8
 exports.mago = {id:"232363534514651137",name:"mago"}; //10
 exports.imp = {id:"232362776666963979",name:"imp"}; //12
-
+exports.nerve = {id: "265897877241331712", name:"nerve"}
 
 exports.getRoleIdByFactionColor = function (color){
     if (color==1) {
@@ -99,6 +99,9 @@ exports.getRoleIdByFactionColor = function (color){
     }
 	else if (color == 12) {
 		return exports.imp;
+    }
+	else if (color == 5) {
+		return exports.nerve;
     }
     else{
 		return {id:undefined,name:undefined};
@@ -136,8 +139,11 @@ exports.getFactionColorByRoleId = function (roleId){ // retourne 0 si ce n'est p
 	else if (roleId == exports.mago.id) {
 		return 10;
     }
-	else if (roleId == exports.imp.id) {
-		return 12;
+	else if (roleId == exports.mago.id) {
+		return 10;
+    }
+	else if (roleId == exports.nerve.id) {
+		return 5;
     }
     else{
 		return 0;
@@ -160,14 +166,16 @@ exports.empireS11ServerRoleId = "199887062613229578";
 exports.nvnerveServerRoleId = "199887253558919169";
 
 
-exports.cardanServerRoleIds12 = "199846296188616704"
+exports.cardanServerRoleId = "371294988052594700"
 exports.seldareServerRoleIds12 = "230282328323260416"
 exports.magoServerRoleIds12 = "230329080065687552"
 exports.neoServerRoleIds12= "230313452822855680"
 exports.impServerRoleIds12 = "230274263377117184"
-exports.negoreServerRoleId = "303901339879211009"//"265118928315875329";
+exports.negoreServerRoleId = "371017825801994241"//"265118928315875329";
 
-exports.empServerRoleIds14 = "303910262178578443"
+exports.empServerRoleIds14 = "371047103050416129"
+exports.NerveServerRoleIds = "371317811408011265"
+
 
 exports.getRoleIdByFactionColorFactionServer = function (color){
     if (color==1) {
@@ -197,8 +205,11 @@ exports.getRoleIdByFactionColorFactionServer = function (color){
     else if (color == 9) {
 	    return exports.nvnerveServerRoleId;
     }
+	else if (color == 5) {
+		return exports.NerveServerRoleIds;
+	}
     else{
-	return undefined;
+		return undefined;
     }
     /*
      * TODO

@@ -38,13 +38,15 @@ exports.neoServerS12Id="230323795733250048";
 exports.magoServerS12Id="230328887098343424";
 
 
-exports.empireServerS14Id = "303908606045192192";
-exports.cardanServerS14Id = "304256157885923339";
+exports.empireServerS14Id = "371039476740521986"//"303908606045192192";
+exports.cardanServerS14Id = "371056930258681858"//"304256157885923339";
 exports.kovahkServerS14Id= "303915094004334594";
 exports.negoreServerIdS14 = "303897586916392962";
 exports.synelleServerIdS14 = "304243885381517313";
 
-exports.negoreServerId = "265118157469908992";
+exports.negoreServerId = "371017233213816833"//"265118157469908992";
+exports.nerveServer = "371314145078935554";
+
 
 exports.getServerIdFromFactionColor = function (factionColor){
 	if (factionColor ==0 ) {
@@ -57,7 +59,7 @@ exports.getServerIdFromFactionColor = function (factionColor){
 		return exports.kovahkServerS14Id;
 	}
 	else if (factionColor ==3 ) {
-		return exports.negoreServerIdS14;
+		return exports.negoreServerIdS;
 	}
 	else if (factionColor ==6 ) {
 		return exports.apheraServerId;
@@ -82,6 +84,9 @@ exports.getServerIdFromFactionColor = function (factionColor){
 	}
 	else if (factionColor == 12) {
 		return exports.imperServerS12Id;
+	}
+	else if (factionColor == 5) {
+		return exports.nerveServer;
 	}
 	else{
 		return undefined
